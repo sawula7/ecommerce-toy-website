@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import { useCart } from "@/context/CartContext";
 import type { Product } from "@/data/products";
@@ -30,7 +31,7 @@ export default function ProductCard({ product }: Props) {
   return (
     <div className="group bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all hover:-translate-y-1">
       {/* Image */}
-      <div className="relative h-52 overflow-hidden bg-gray-50">
+      <Link href={`/product/${product.id}`} className="block relative h-52 overflow-hidden bg-gray-50">
         <Image
           src={product.image}
           alt={product.name}
@@ -51,23 +52,25 @@ export default function ProductCard({ product }: Props) {
         {/* Wishlist */}
         <div className="absolute top-3 right-3 opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
           <button
-            onClick={() => setWishlisted(!wishlisted)}
+            onClick={(e) => { e.preventDefault(); setWishlisted(!wishlisted); }}
             className={`w-9 h-9 rounded-full bg-white border flex items-center justify-center shadow hover:bg-secondary hover:text-white hover:border-secondary transition-colors ${wishlisted ? "text-secondary" : "text-gray-400"}`}
             aria-label="Add to wishlist"
           >
             {wishlisted ? "♥" : "♡"}
           </button>
         </div>
-      </div>
+      </Link>
 
       {/* Info */}
       <div className="p-4">
         <p className="text-[11px] font-bold uppercase tracking-widest text-primary mb-1">
           {product.category}
         </p>
-        <h4 className="font-bold text-sm text-gray-800 mb-1.5 leading-snug line-clamp-2">
-          {product.name}
-        </h4>
+        <Link href={`/product/${product.id}`}>
+          <h4 className="font-bold text-sm text-gray-800 mb-1.5 leading-snug line-clamp-2 hover:text-primary transition-colors">
+            {product.name}
+          </h4>
+        </Link>
 
         <div className="flex items-center gap-1 mb-2">
           <span className="text-secondary text-sm">
