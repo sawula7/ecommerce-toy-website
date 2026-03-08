@@ -1,0 +1,177 @@
+"use client";
+
+import { useState } from "react";
+
+const navItems = [
+  {
+    label: "DIY Kits",
+    children: [
+      "Wooden Robot Kits",
+      "3D City Builders",
+      "Sailboat Kits",
+      "Airplane Kits",
+      "Animal Kits",
+    ],
+  },
+  {
+    label: "Montessori",
+    children: [
+      "Practical Life",
+      "Sensorial",
+      "Language",
+      "Mathematics",
+      "Geography",
+      "Montessori Toddler",
+    ],
+  },
+  {
+    label: "STEM Toys",
+    children: [
+      "Gears & Mechanics",
+      "Science Kits",
+      "Engineering Sets",
+      "Coding Toys",
+    ],
+  },
+  { label: "Wooden Toys", children: [] },
+  { label: "Arts & Crafts", children: [] },
+  {
+    label: "Books",
+    children: ["Story Books", "Activity Books", "Cloth Books"],
+  },
+  {
+    label: "Furniture",
+    children: ["Infant & Toddler", "Preschool", "Storage"],
+  },
+  {
+    label: "Shop by Age",
+    children: ["0–1 Years", "1–3 Years", "3–5 Years", "5+ Years"],
+  },
+  { label: "🏷️ Offers", children: [] },
+];
+
+export default function Header() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+
+  return (
+    <header className="bg-white sticky top-0 z-50 shadow-md">
+      {/* Main header row */}
+      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-4 flex-wrap">
+        {/* Logo */}
+        <a href="/" className="flex items-center gap-2 shrink-0">
+          <span className="text-4xl">🧸</span>
+          <div className="flex flex-col leading-none">
+            <span
+              className="text-2xl font-bold text-orange-500"
+              style={{ fontFamily: "var(--font-poppins)" }}
+            >
+              EduToys
+            </span>
+            <span className="text-[10px] text-gray-400 tracking-widest font-semibold">
+              LEARN · PLAY · GROW
+            </span>
+          </div>
+        </a>
+
+        {/* Search */}
+        <div className="flex flex-1 max-w-2xl border-2 border-gray-200 rounded-full overflow-hidden focus-within:border-orange-500 transition-colors min-w-[180px]">
+          <input
+            type="text"
+            placeholder="Search for DIY toys, puzzles, Montessori…"
+            className="flex-1 px-5 py-2.5 text-sm outline-none font-[inherit]"
+          />
+          <button className="bg-orange-500 hover:bg-orange-600 text-white px-5 text-base transition-colors">
+            🔍
+          </button>
+        </div>
+
+        {/* Actions */}
+        <div className="flex items-center gap-1 ml-auto">
+          {[
+            { icon: "♡", label: "Wishlist" },
+            { icon: "👤", label: "Account" },
+          ].map((a) => (
+            <a
+              key={a.label}
+              href="#"
+              className="flex flex-col items-center px-3 py-2 rounded-xl hover:bg-gray-50 transition-colors text-center"
+            >
+              <span className="text-xl leading-none">{a.icon}</span>
+              <span className="text-[10px] text-gray-400 font-semibold mt-0.5">
+                {a.label}
+              </span>
+            </a>
+          ))}
+          {/* Cart */}
+          <a
+            href="#"
+            className="relative flex flex-col items-center px-3 py-2 rounded-xl hover:bg-gray-50 transition-colors"
+          >
+            <span className="text-xl leading-none">🛒</span>
+            <span className="text-[10px] text-gray-400 font-semibold mt-0.5">
+              Cart
+            </span>
+            <span className="absolute top-1 right-1.5 bg-orange-500 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+              0
+            </span>
+          </a>
+        </div>
+
+        {/* Mobile toggle */}
+        <button
+          className="md:hidden text-2xl ml-2"
+          onClick={() => setMobileOpen(!mobileOpen)}
+          aria-label="Menu"
+        >
+          ☰
+        </button>
+      </div>
+
+      {/* Nav bar */}
+      <nav className={`bg-orange-500 ${mobileOpen ? "block" : "hidden"} md:block`}>
+        <div className="max-w-7xl mx-auto px-4">
+          <ul className="flex flex-col md:flex-row md:items-center overflow-x-auto scrollbar-none">
+            {navItems.map((item) => (
+              <li key={item.label} className="relative group">
+                <button
+                  className="w-full text-left flex items-center justify-between md:justify-start gap-1 px-4 py-3 text-white text-sm font-bold whitespace-nowrap hover:bg-black/15 transition-colors"
+                  onClick={() =>
+                    setOpenDropdown(
+                      openDropdown === item.label ? null : item.label
+                    )
+                  }
+                >
+                  {item.label}
+                  {item.children.length > 0 && (
+                    <span className="text-xs opacity-70">▾</span>
+                  )}
+                </button>
+                {item.children.length > 0 && (
+                  <ul
+                    className={`
+                      md:hidden group-hover:md:block absolute left-0 top-full bg-white min-w-[200px] shadow-xl rounded-b-xl z-50 py-2
+                      ${openDropdown === item.label ? "block" : "hidden"}
+                      md:group-hover:block
+                    `}
+                  >
+                    {item.children.map((child) => (
+                      <li key={child}>
+                        <a
+                          href="#"
+                          className="block px-5 py-2 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-500 hover:pl-6 transition-all"
+                        >
+                          {child}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </nav>
+    </header>
+  );
+}

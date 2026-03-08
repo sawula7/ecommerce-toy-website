@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+:root {
+  --primary: #ff6b00;
+  --primary-dk: #e05a00;
+  --secondary: #ffd600;
+  --background: #ffffff;
+  --foreground: #1a1a1a;
+  --font-poppins: 'Poppins', system-ui, sans-serif;
+  --font-nunito: 'Nunito', system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-nunito);
+  line-height: 1.6;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+* {
+  box-sizing: border-box;
+}
