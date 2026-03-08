@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import SessionProviderWrapper from "@/components/SessionProviderWrapper";
 import { CartProvider } from "@/context/CartContext";
+import { OrderProvider } from "@/context/OrderContext";
+import { ProductProvider } from "@/context/ProductContext";
 import CartDrawer from "@/components/CartDrawer";
 import "./globals.css";
 
@@ -28,10 +30,14 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         <SessionProviderWrapper>
-          <CartProvider>
-            {children}
-            <CartDrawer />
-          </CartProvider>
+          <ProductProvider>
+            <OrderProvider>
+              <CartProvider>
+                {children}
+                <CartDrawer />
+              </CartProvider>
+            </OrderProvider>
+          </ProductProvider>
         </SessionProviderWrapper>
       </body>
     </html>

@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 import ProductCard from "./ProductCard";
-import { products } from "@/data/products";
+import { useProducts } from "@/context/ProductContext";
 
 const tabs = ["All", "STEM Toys", "DIY Puzzles", "Wooden Toys"];
 
 export default function ProductsSection() {
   const [activeTab, setActiveTab] = useState("All");
+  const { products } = useProducts();
 
   const filtered =
     activeTab === "All"

@@ -4,8 +4,8 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { use, useState } from "react";
-import { products } from "@/data/products";
 import { useCart } from "@/context/CartContext";
+import { useProducts } from "@/context/ProductContext";
 import TopBar from "@/components/TopBar";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -20,6 +20,7 @@ const badgeStyles: Record<string, string> = {
 
 export default function ProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
+  const { products } = useProducts();
   const product = products.find((p) => p.id === Number(id));
 
   const { addToCart } = useCart();

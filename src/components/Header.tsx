@@ -120,15 +120,17 @@ export default function Header() {
                     <p className="text-sm font-bold text-gray-800 truncate">{session.user?.name}</p>
                     <p className="text-xs text-gray-400 truncate">{session.user?.email}</p>
                   </div>
-                  <a href="#" className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-primary-lt hover:text-primary transition-colors">
-                    My Account
-                  </a>
-                  <a href="#" className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-primary-lt hover:text-primary transition-colors">
+                  <Link href="/orders" onClick={() => setUserMenuOpen(false)} className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-primary-lt hover:text-primary transition-colors">
                     My Orders
-                  </a>
+                  </Link>
                   <a href="#" className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-primary-lt hover:text-primary transition-colors">
                     Wishlist
                   </a>
+                  {session.user?.email === "admin@edutoys.lk" && (
+                    <Link href="/admin" onClick={() => setUserMenuOpen(false)} className="block px-4 py-2.5 text-sm text-purple-600 font-semibold hover:bg-purple-50 transition-colors">
+                      Admin Panel
+                    </Link>
+                  )}
                   <div className="border-t border-gray-100 mt-1 pt-1">
                     <button
                       onClick={() => signOut({ callbackUrl: "/" })}

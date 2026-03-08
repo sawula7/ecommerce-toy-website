@@ -4,7 +4,9 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useCart } from "@/context/CartContext";
+import { useOrders } from "@/context/OrderContext";
 
 const DELIVERY_FEE = 350;
 
@@ -12,7 +14,9 @@ type PaymentMethod = "card" | "cod" | "bank";
 
 export default function CheckoutPage() {
   const router = useRouter();
+  const { data: session } = useSession();
   const { items, subtotal, clearCart } = useCart();
+  const { placeOrder } = useOrders();
   const deliveryFee = DELIVERY_FEE;
   const total = subtotal + deliveryFee;
 
@@ -59,10 +63,31 @@ export default function CheckoutPage() {
     if (Object.keys(errs).length) { setErrors(errs); return; }
 
     setPlacing(true);
-    // Simulate processing delay
     await new Promise((r) => setTimeout(r, 1400));
+
+    const orderId = placeOrder({
+      userId: session?.user?.email ?? null,
+      userName: `${form.firstName} ${form.lastName}`,
+      userEmail: form.email,
+      userPhone: form.phone,
+      items,
+      subtotal,
+      deliveryFee,
+      total,
+      paymentMethod: payment,
+      address: {
+        firstName: form.firstName,
+        lastName: form.lastName,
+        address: form.address,
+        city: form.city,
+        district: form.district,
+        postalCode: form.postalCode,
+        notes: form.notes,
+      },
+    });
+
     clearCart();
-    router.push("/order-confirmed");
+    router.push(`/order-confirmed?id=${orderId}`);
   }
 
   if (items.length === 0) {
