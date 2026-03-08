@@ -21,7 +21,7 @@ export async function registerUser(name: string, email: string, password: string
     throw new Error("An account with this email already exists.");
   }
   const passwordHash = await bcrypt.hash(password, 10);
-  const user: StoredUser = { id: String(Date.now()), name, email, passwordHash };
+  const user: StoredUser = { id: crypto.randomUUID(), name, email, passwordHash };
   users.push(user);
   return { id: user.id, name: user.name, email: user.email };
 }
@@ -56,5 +56,9 @@ export const authOptions: NextAuthOptions = {
     signIn: "/login",
   },
   session: { strategy: "jwt" },
-  secret: process.env.NEXTAUTH_SECRET ?? "dev-secret-change-in-production",
+  secret: (() => {
+    const secret = process.env.NEXTAUTH_SECRET;
+    if (!secret) throw new Error("NEXTAUTH_SECRET environment variable is not set.");
+    return secret;
+  })(),
 };
