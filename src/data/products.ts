@@ -161,4 +161,11 @@ export const categories = [
       "https://images.unsplash.com/photo-1617096200347-cb04ae810b1d?w=300&h=300&fit=crop&auto=format",
     alt: "Wooden educational toys",
   },
+  {
+    name: "Art & Craft",
+    count: 50,
+    image:
+      "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=300&h=300&fit=crop&auto=format",
+    alt: "Art and craft supplies for kids",
+  },
 ];
