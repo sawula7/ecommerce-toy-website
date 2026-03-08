@@ -1,7 +1,13 @@
 import Link from "next/link";
+import TopBar from "@/components/TopBar";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 export default function RefundReturnsPage() {
   return (
+    <>
+    <TopBar />
+    <Header />
     <div className="min-h-screen bg-gray-50">
       {/* Hero */}
       <div className="bg-white border-b border-gray-100">
@@ -163,6 +169,8 @@ export default function RefundReturnsPage() {
         </div>
       </div>
     </div>
+    <Footer />
+    </>
   );
 }
 
