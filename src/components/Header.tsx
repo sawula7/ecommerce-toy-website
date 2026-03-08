@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
+import { useCart } from "@/context/CartContext";
 
 const navItems = [
   {
@@ -55,6 +56,7 @@ const navItems = [
 
 export default function Header() {
   const { data: session, status } = useSession();
+  const { totalItems, openCart } = useCart();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -175,16 +177,19 @@ export default function Header() {
           )}
 
           {/* Cart */}
-          <a
-            href="#"
+          <button
+            onClick={openCart}
             className="relative flex flex-col items-center px-3 py-2 rounded-xl hover:bg-gray-50 transition-colors"
+            aria-label="Open cart"
           >
             <span className="text-xl leading-none">🛒</span>
             <span className="text-[10px] text-gray-400 font-semibold mt-0.5">Cart</span>
-            <span className="cart-count-badge absolute top-1 right-1.5 bg-primary text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
-              0
-            </span>
-          </a>
+            {totalItems > 0 && (
+              <span className="absolute top-1 right-1.5 bg-primary text-white text-[9px] font-bold min-w-[16px] h-4 px-0.5 rounded-full flex items-center justify-center">
+                {totalItems}
+              </span>
+            )}
+          </button>
         </div>
 
         {/* Mobile toggle */}

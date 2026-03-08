@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import SessionProviderWrapper from "@/components/SessionProviderWrapper";
+import { CartProvider } from "@/context/CartContext";
+import CartDrawer from "@/components/CartDrawer";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -25,7 +27,12 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased">
-        <SessionProviderWrapper>{children}</SessionProviderWrapper>
+        <SessionProviderWrapper>
+          <CartProvider>
+            {children}
+            <CartDrawer />
+          </CartProvider>
+        </SessionProviderWrapper>
       </body>
     </html>
   );
