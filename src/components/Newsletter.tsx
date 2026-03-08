@@ -15,7 +15,7 @@ export default function Newsletter() {
   };
 
   return (
-    <section className="py-16 bg-gradient-to-r from-orange-500 to-amber-400">
+    <section className="py-16 bg-gradient-to-r from-primary to-secondary">
       <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-10 flex-wrap">
         <div>
           <h2

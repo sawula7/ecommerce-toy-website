@@ -15,7 +15,7 @@ export default function WhyUs() {
         <div className="flex flex-col lg:flex-row items-center gap-16">
           {/* Text */}
           <div className="flex-1">
-            <span className="text-xs font-bold text-orange-500 uppercase tracking-widest block mb-3">
+            <span className="text-xs font-bold text-primary uppercase tracking-widest block mb-3">
               Why EduToys?
             </span>
             <h2
@@ -37,7 +37,7 @@ export default function WhyUs() {
             </ul>
             <a
               href="#"
-              className="inline-block bg-orange-500 hover:bg-orange-600 text-white font-bold px-7 py-3 rounded-full transition-all hover:-translate-y-0.5"
+              className="inline-block bg-primary hover:bg-primary-dk text-white font-bold px-7 py-3 rounded-full transition-all hover:-translate-y-0.5"
             >
               About Us
             </a>
@@ -55,7 +55,7 @@ export default function WhyUs() {
               />
             </div>
             {/* Badge */}
-            <div className="absolute -bottom-5 -left-5 bg-orange-500 text-white rounded-2xl p-4 shadow-xl text-center">
+            <div className="absolute -bottom-5 -left-5 bg-primary text-white rounded-2xl p-4 shadow-xl text-center">
               <span
                 className="block text-3xl font-bold leading-none"
                 style={{ fontFamily: "var(--font-poppins)" }}

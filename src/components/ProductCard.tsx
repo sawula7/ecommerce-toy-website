@@ -6,8 +6,8 @@ import type { Product } from "@/data/products";
 
 const badgeStyles: Record<string, string> = {
   new: "bg-green-500",
-  hot: "bg-orange-500",
-  sale: "bg-red-500",
+  hot: "bg-primary",
+  sale: "bg-secondary",
 };
 
 interface Props {
@@ -44,7 +44,7 @@ export default function ProductCard({ product, onAddToCart }: Props) {
         <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
           <button
             onClick={() => setWishlisted(!wishlisted)}
-            className={`w-9 h-9 rounded-full bg-white border flex items-center justify-center shadow hover:bg-orange-500 hover:text-white hover:border-orange-500 transition-colors ${wishlisted ? "text-red-500" : "text-gray-400"}`}
+            className={`w-9 h-9 rounded-full bg-white border flex items-center justify-center shadow hover:bg-primary hover:text-white hover:border-primary transition-colors ${wishlisted ? "text-red-500" : "text-gray-400"}`}
             aria-label="Wishlist"
           >
             {wishlisted ? "♥" : "♡"}
@@ -54,7 +54,7 @@ export default function ProductCard({ product, onAddToCart }: Props) {
 
       {/* Info */}
       <div className="p-4">
-        <p className="text-[11px] font-bold uppercase tracking-widest text-orange-500 mb-1">
+        <p className="text-[11px] font-bold uppercase tracking-widest text-primary mb-1">
           {product.category}
         </p>
         <h4 className="font-bold text-sm text-gray-800 mb-1.5 leading-snug line-clamp-2">
@@ -63,7 +63,7 @@ export default function ProductCard({ product, onAddToCart }: Props) {
 
         {/* Stars */}
         <div className="flex items-center gap-1 mb-2">
-          <span className="text-yellow-400 text-sm">
+          <span className="text-secondary text-sm">
             {"★".repeat(product.rating)}
             {"☆".repeat(5 - product.rating)}
           </span>
@@ -80,14 +80,14 @@ export default function ProductCard({ product, onAddToCart }: Props) {
               Rs. {product.oldPrice.toLocaleString()}
             </span>
           )}
-          <span className="text-lg font-extrabold text-orange-500">
+          <span className="text-lg font-extrabold text-primary">
             Rs. {product.price.toLocaleString()}
           </span>
         </div>
 
         <button
           onClick={() => onAddToCart(product)}
-          className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2.5 rounded-xl text-sm transition-all hover:-translate-y-0.5 active:scale-95"
+          className="w-full bg-primary hover:bg-primary-dk text-white font-bold py-2.5 rounded-xl text-sm transition-all hover:-translate-y-0.5 active:scale-95"
         >
           Add to Cart
         </button>

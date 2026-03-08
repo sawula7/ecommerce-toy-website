@@ -50,7 +50,7 @@ export default function Footer() {
               <a
                 key={i}
                 href="#"
-                className="w-9 h-9 rounded-full bg-gray-800 hover:bg-orange-500 flex items-center justify-center text-sm font-bold transition-colors"
+                className="w-9 h-9 rounded-full bg-gray-800 hover:bg-primary flex items-center justify-center text-sm font-bold transition-colors"
               >
                 {icon}
               </a>
@@ -64,7 +64,7 @@ export default function Footer() {
           <ul className="space-y-2.5">
             {shopLinks.map((l) => (
               <li key={l}>
-                <a href="#" className="text-sm hover:text-orange-400 hover:pl-1 transition-all">
+                <a href="#" className="text-sm hover:text-primary hover:pl-1 transition-all">
                   {l}
                 </a>
               </li>
@@ -78,7 +78,7 @@ export default function Footer() {
           <ul className="space-y-2.5">
             {careLinks.map((l) => (
               <li key={l}>
-                <a href="#" className="text-sm hover:text-orange-400 hover:pl-1 transition-all">
+                <a href="#" className="text-sm hover:text-primary hover:pl-1 transition-all">
                   {l}
                 </a>
               </li>
@@ -91,8 +91,8 @@ export default function Footer() {
           <h4 className="text-xs font-bold text-white uppercase tracking-widest mb-5">Contact</h4>
           <address className="not-italic space-y-3 text-sm text-gray-500">
             <p>📍 281/D/5, St Marys Road<br />Welivita, Kaduwela</p>
-            <p>📞 <a href="tel:0777489034" className="hover:text-orange-400">0777489034</a></p>
-            <p>✉️ <a href="mailto:info@edutoys.lk" className="hover:text-orange-400">info@edutoys.lk</a></p>
+            <p>📞 <a href="tel:0777489034" className="hover:text-primary">0777489034</a></p>
+            <p>✉️ <a href="mailto:info@edutoys.lk" className="hover:text-primary">info@edutoys.lk</a></p>
           </address>
           <div className="mt-5">
             <p className="text-xs font-bold text-white mb-1">Store Hours</p>

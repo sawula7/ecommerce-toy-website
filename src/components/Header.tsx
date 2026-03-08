@@ -70,7 +70,7 @@ export default function Header() {
           <span className="text-4xl">🧸</span>
           <div className="flex flex-col leading-none">
             <span
-              className="text-2xl font-bold text-orange-500"
+              className="text-2xl font-bold text-primary"
               style={{ fontFamily: "var(--font-poppins)" }}
             >
               EduToys
@@ -82,13 +82,13 @@ export default function Header() {
         </Link>
 
         {/* Search */}
-        <div className="flex flex-1 max-w-2xl border-2 border-gray-200 rounded-full overflow-hidden focus-within:border-orange-500 transition-colors min-w-[180px]">
+        <div className="flex flex-1 max-w-2xl border-2 border-gray-200 rounded-full overflow-hidden focus-within:border-primary transition-colors min-w-[180px]">
           <input
             type="text"
             placeholder="Search for DIY toys, puzzles, Montessori…"
             className="flex-1 px-5 py-2.5 text-sm outline-none font-[inherit]"
           />
-          <button className="bg-orange-500 hover:bg-orange-600 text-white px-5 text-base transition-colors">
+          <button className="bg-primary hover:bg-primary-dk text-white px-5 text-base transition-colors">
             🔍
           </button>
         </div>
@@ -119,10 +119,10 @@ export default function Header() {
                     alt={session.user.name ?? "User"}
                     width={32}
                     height={32}
-                    className="rounded-full border-2 border-orange-300"
+                    className="rounded-full border-2 border-primary/40"
                   />
                 ) : (
-                  <div className="w-8 h-8 rounded-full bg-orange-500 text-white font-bold text-sm flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-full bg-primary text-white font-bold text-sm flex items-center justify-center">
                     {userInitial}
                   </div>
                 )}
@@ -137,13 +137,13 @@ export default function Header() {
                     <p className="text-sm font-bold text-gray-800 truncate">{session.user?.name}</p>
                     <p className="text-xs text-gray-400 truncate">{session.user?.email}</p>
                   </div>
-                  <a href="#" className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-500 transition-colors">
+                  <a href="#" className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-primary-lt hover:text-primary transition-colors">
                     My Account
                   </a>
-                  <a href="#" className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-500 transition-colors">
+                  <a href="#" className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-primary-lt hover:text-primary transition-colors">
                     My Orders
                   </a>
-                  <a href="#" className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-500 transition-colors">
+                  <a href="#" className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-primary-lt hover:text-primary transition-colors">
                     Wishlist
                   </a>
                   <div className="border-t border-gray-100 mt-1 pt-1">
@@ -161,13 +161,13 @@ export default function Header() {
             <div className="flex items-center gap-2">
               <Link
                 href="/login"
-                className="text-sm font-bold text-gray-600 hover:text-orange-500 px-3 py-2 rounded-xl hover:bg-gray-50 transition-colors"
+                className="text-sm font-bold text-gray-600 hover:text-primary px-3 py-2 rounded-xl hover:bg-gray-50 transition-colors"
               >
                 Sign In
               </Link>
               <Link
                 href="/register"
-                className="text-sm font-bold bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-full transition-colors"
+                className="text-sm font-bold bg-primary hover:bg-primary-dk text-white px-4 py-2 rounded-full transition-colors"
               >
                 Register
               </Link>
@@ -181,7 +181,7 @@ export default function Header() {
           >
             <span className="text-xl leading-none">🛒</span>
             <span className="text-[10px] text-gray-400 font-semibold mt-0.5">Cart</span>
-            <span className="cart-count-badge absolute top-1 right-1.5 bg-orange-500 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+            <span className="cart-count-badge absolute top-1 right-1.5 bg-primary text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
               0
             </span>
           </a>
@@ -198,7 +198,7 @@ export default function Header() {
       </div>
 
       {/* Nav bar */}
-      <nav className={`bg-orange-500 ${mobileOpen ? "block" : "hidden"} md:block`}>
+      <nav className={`bg-primary ${mobileOpen ? "block" : "hidden"} md:block`}>
         <div className="max-w-7xl mx-auto px-4">
           <ul className="flex flex-col md:flex-row md:items-center overflow-x-auto scrollbar-none">
             {navItems.map((item) => (
@@ -226,7 +226,7 @@ export default function Header() {
                       <li key={child}>
                         <a
                           href="#"
-                          className="block px-5 py-2 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-500 hover:pl-6 transition-all"
+                          className="block px-5 py-2 text-sm text-gray-700 hover:bg-primary-lt hover:text-primary hover:pl-6 transition-all"
                         >
                           {child}
                         </a>

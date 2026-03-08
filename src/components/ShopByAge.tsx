@@ -60,7 +60,7 @@ export default function ShopByAge() {
               </div>
               <div className="mt-4 mb-1">
                 <span
-                  className="block text-3xl font-bold text-orange-500 leading-none"
+                  className="block text-3xl font-bold text-primary leading-none"
                   style={{ fontFamily: "var(--font-poppins)" }}
                 >
                   {g.range}

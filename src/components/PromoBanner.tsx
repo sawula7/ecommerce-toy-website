@@ -7,9 +7,9 @@ export default function PromoBanner() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
 
           {/* Large promo */}
-          <div className="lg:col-span-2 rounded-2xl bg-gradient-to-br from-amber-50 to-orange-100 overflow-hidden flex items-center justify-between p-8 gap-6 hover:shadow-lg transition-shadow">
+          <div className="lg:col-span-2 rounded-2xl bg-gradient-to-br from-[#e4f9fa] to-[#c5f1f4] overflow-hidden flex items-center justify-between p-8 gap-6 hover:shadow-lg transition-shadow">
             <div className="flex-1">
-              <span className="text-xs font-bold text-orange-500 uppercase tracking-widest block mb-2">
+              <span className="text-xs font-bold text-primary uppercase tracking-widest block mb-2">
                 Special Offer
               </span>
               <h3
@@ -23,7 +23,7 @@ export default function PromoBanner() {
               </p>
               <a
                 href="#products"
-                className="inline-block bg-orange-500 hover:bg-orange-600 text-white font-bold px-6 py-2.5 rounded-full transition-colors"
+                className="inline-block bg-primary hover:bg-primary-dk text-white font-bold px-6 py-2.5 rounded-full transition-colors"
               >
                 Shop Offer
               </a>
@@ -41,9 +41,9 @@ export default function PromoBanner() {
 
           {/* Small promos */}
           <div className="flex flex-col gap-5">
-            <div className="rounded-2xl bg-gradient-to-br from-green-50 to-emerald-100 overflow-hidden flex items-center justify-between p-6 gap-4 hover:shadow-lg transition-shadow flex-1">
+            <div className="rounded-2xl bg-gradient-to-br from-[#fff0f5] to-[#ffd6e6] overflow-hidden flex items-center justify-between p-6 gap-4 hover:shadow-lg transition-shadow flex-1">
               <div>
-                <span className="text-xs font-bold text-emerald-600 uppercase tracking-widest block mb-1">
+                <span className="text-xs font-bold text-secondary uppercase tracking-widest block mb-1">
                   New In
                 </span>
                 <h3
@@ -52,7 +52,7 @@ export default function PromoBanner() {
                 >
                   STEM Explorer Kits
                 </h3>
-                <a href="#" className="inline-block bg-white text-orange-500 hover:bg-orange-500 hover:text-white border border-orange-300 font-bold px-4 py-1.5 rounded-full text-sm transition-colors">
+                <a href="#" className="inline-block bg-white text-primary hover:bg-primary hover:text-white border border-primary/40 font-bold px-4 py-1.5 rounded-full text-sm transition-colors">
                   Explore
                 </a>
               </div>
@@ -67,9 +67,9 @@ export default function PromoBanner() {
               </div>
             </div>
 
-            <div className="rounded-2xl bg-gradient-to-br from-blue-50 to-sky-100 overflow-hidden flex items-center justify-between p-6 gap-4 hover:shadow-lg transition-shadow flex-1">
+            <div className="rounded-2xl bg-gradient-to-br from-[#f0eeff] to-[#ddd6fe] overflow-hidden flex items-center justify-between p-6 gap-4 hover:shadow-lg transition-shadow flex-1">
               <div>
-                <span className="text-xs font-bold text-blue-600 uppercase tracking-widest block mb-1">
+                <span className="text-xs font-bold text-[#7c5cbf] uppercase tracking-widest block mb-1">
                   Bestseller
                 </span>
                 <h3
@@ -78,7 +78,7 @@ export default function PromoBanner() {
                 >
                   Wooden Puzzles
                 </h3>
-                <a href="#" className="inline-block bg-white text-orange-500 hover:bg-orange-500 hover:text-white border border-orange-300 font-bold px-4 py-1.5 rounded-full text-sm transition-colors">
+                <a href="#" className="inline-block bg-white text-primary hover:bg-primary hover:text-white border border-primary/40 font-bold px-4 py-1.5 rounded-full text-sm transition-colors">
                   Shop Now
                 </a>
               </div>

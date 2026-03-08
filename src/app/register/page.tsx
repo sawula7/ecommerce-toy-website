@@ -69,7 +69,7 @@ export default function RegisterPage() {
         <Link href="/" className="flex items-center justify-center gap-2 mb-8">
           <span className="text-4xl">🧸</span>
           <span
-            className="text-3xl font-bold text-orange-500"
+            className="text-3xl font-bold text-primary"
             style={{ fontFamily: "var(--font-poppins)" }}
           >
             EduToys
@@ -139,7 +139,7 @@ export default function RegisterPage() {
                 onChange={onChange}
                 placeholder="Your full name"
                 required
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm outline-none focus:border-orange-500 transition-colors font-[inherit]"
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm outline-none focus:border-primary transition-colors font-[inherit]"
               />
             </div>
 
@@ -154,7 +154,7 @@ export default function RegisterPage() {
                 onChange={onChange}
                 placeholder="you@example.com"
                 required
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm outline-none focus:border-orange-500 transition-colors font-[inherit]"
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm outline-none focus:border-primary transition-colors font-[inherit]"
               />
             </div>
 
@@ -169,7 +169,7 @@ export default function RegisterPage() {
                 onChange={onChange}
                 placeholder="At least 6 characters"
                 required
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm outline-none focus:border-orange-500 transition-colors font-[inherit]"
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm outline-none focus:border-primary transition-colors font-[inherit]"
               />
             </div>
 
@@ -184,14 +184,14 @@ export default function RegisterPage() {
                 onChange={onChange}
                 placeholder="Repeat your password"
                 required
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm outline-none focus:border-orange-500 transition-colors font-[inherit]"
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm outline-none focus:border-primary transition-colors font-[inherit]"
               />
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-orange-500 hover:bg-orange-600 disabled:opacity-60 text-white font-bold py-3.5 rounded-xl transition-all hover:-translate-y-0.5 active:scale-95 mt-1"
+              className="w-full bg-primary hover:bg-primary-dk disabled:opacity-60 text-white font-bold py-3.5 rounded-xl transition-all hover:-translate-y-0.5 active:scale-95 mt-1"
             >
               {loading ? "Creating account…" : "Create Account"}
             </button>
@@ -199,7 +199,7 @@ export default function RegisterPage() {
 
           <p className="text-center text-sm text-gray-400 mt-6">
             Already have an account?{" "}
-            <Link href="/login" className="text-orange-500 hover:text-orange-600 font-bold">
+            <Link href="/login" className="text-primary hover:text-primary-dk font-bold">
               Sign in
             </Link>
           </p>

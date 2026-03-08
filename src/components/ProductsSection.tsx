@@ -51,8 +51,8 @@ export default function ProductsSection() {
               onClick={() => setActiveTab(tab)}
               className={`px-5 py-2 rounded-full text-sm font-bold border-2 transition-all ${
                 activeTab === tab
-                  ? "bg-orange-500 text-white border-orange-500"
-                  : "bg-white text-gray-400 border-gray-200 hover:border-orange-400 hover:text-orange-500"
+                  ? "bg-primary text-white border-primary"
+                  : "bg-white text-gray-400 border-gray-200 hover:border-primary hover:text-primary"
               }`}
             >
               {tab}
@@ -74,7 +74,7 @@ export default function ProductsSection() {
         <div className="text-center mt-12">
           <a
             href="#"
-            className="inline-block border-2 border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white font-bold px-10 py-3 rounded-full text-sm transition-all hover:-translate-y-0.5"
+            className="inline-block border-2 border-primary text-primary hover:bg-primary hover:text-white font-bold px-10 py-3 rounded-full text-sm transition-all hover:-translate-y-0.5"
           >
             View All Products
           </a>

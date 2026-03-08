@@ -40,9 +40,9 @@ export default function Testimonials() {
           {reviews.map((r) => (
             <div
               key={r.name}
-              className="bg-white rounded-2xl p-7 shadow-sm border-t-4 border-orange-500 hover:shadow-md transition-shadow"
+              className="bg-white rounded-2xl p-7 shadow-sm border-t-4 border-primary hover:shadow-md transition-shadow"
             >
-              <div className="text-yellow-400 text-xl mb-4">★★★★★</div>
+              <div className="text-secondary text-xl mb-4">★★★★★</div>
               <p className="text-gray-500 text-sm leading-relaxed italic mb-6">
                 &ldquo;{r.text}&rdquo;
               </p>
