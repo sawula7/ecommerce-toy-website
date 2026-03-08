@@ -1,54 +1,44 @@
 "use client";
 
-import { createContext, useContext, useEffect, useReducer, ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { Product, products as staticProducts } from "@/data/products";
 
 interface ProductContextValue {
   products: Product[];
-  addProduct: (data: Omit<Product, "id">) => void;
-  updateStock: (id: number, stock: number) => void;
+  addProduct: (data: Omit<Product, "id">) => Promise<void>;
+  updateStock: (id: number, stock: number) => Promise<void>;
 }
 
 const ProductContext = createContext<ProductContextValue | null>(null);
 
-const STORAGE_KEY = "edutoys_products";
-
-function loadProducts(): Product[] {
-  if (typeof window === "undefined") return staticProducts;
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (!stored) return staticProducts;
-    return JSON.parse(stored);
-  } catch {
-    return staticProducts;
-  }
-}
-
-function save(products: Product[]) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
-}
-
 export function ProductProvider({ children }: { children: ReactNode }) {
-  const [products, setProducts] = useReducer(
-    (_: Product[], next: Product[]) => next,
-    staticProducts
-  );
+  const [products, setProducts] = useState<Product[]>(staticProducts);
 
   useEffect(() => {
-    setProducts(loadProducts());
+    fetch("/api/products")
+      .then((res) => res.json())
+      .then((data: Product[]) => setProducts(data))
+      .catch(() => {/* fallback to static products already in state */});
   }, []);
 
-  function addProduct(data: Omit<Product, "id">) {
-    const id = Math.max(...products.map((p) => p.id), 0) + 1;
-    const updated = [...products, { ...data, id }];
-    save(updated);
-    setProducts(updated);
+  async function addProduct(data: Omit<Product, "id">) {
+    const res = await fetch("/api/products", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    const product: Product = await res.json();
+    setProducts((prev) => [...prev, product]);
   }
 
-  function updateStock(id: number, stock: number) {
-    const updated = products.map((p) => (p.id === id ? { ...p, stock } : p));
-    save(updated);
-    setProducts(updated);
+  async function updateStock(id: number, stock: number) {
+    // Optimistic update
+    setProducts((prev) => prev.map((p) => (p.id === id ? { ...p, stock } : p)));
+    await fetch(`/api/products/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ stock }),
+    });
   }
 
   return (

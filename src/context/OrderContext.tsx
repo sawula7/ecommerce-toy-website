@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useReducer, ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { Product } from "@/data/products";
 
 export type OrderStatus =
@@ -58,52 +58,57 @@ export interface Order {
 
 interface OrderContextValue {
   orders: Order[];
-  placeOrder: (data: Omit<Order, "id" | "status" | "createdAt" | "updatedAt">) => string;
-  updateOrderStatus: (id: string, status: OrderStatus) => void;
+  placeOrder: (data: Omit<Order, "id" | "status" | "createdAt" | "updatedAt">) => Promise<string>;
+  updateOrderStatus: (id: string, status: OrderStatus) => Promise<void>;
   getUserOrders: (userId: string | null, email: string) => Order[];
+  refreshOrders: () => Promise<void>;
 }
 
 const OrderContext = createContext<OrderContextValue | null>(null);
 
-const STORAGE_KEY = "edutoys_orders";
-
-function loadOrders(): Order[] {
-  if (typeof window === "undefined") return [];
-  try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "[]");
-  } catch {
-    return [];
-  }
-}
-
-function save(orders: Order[]) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(orders));
-}
-
 export function OrderProvider({ children }: { children: ReactNode }) {
-  const [orders, setOrders] = useReducer((_: Order[], next: Order[]) => next, []);
+  const [orders, setOrders] = useState<Order[]>([]);
+
+  async function fetchOrders() {
+    try {
+      const res = await fetch("/api/orders");
+      if (res.ok) {
+        const data = await res.json();
+        setOrders(data);
+      }
+    } catch {
+      // Not logged in or network error — leave orders empty
+    }
+  }
 
   useEffect(() => {
-    setOrders(loadOrders());
+    fetchOrders();
   }, []);
 
-  function placeOrder(data: Omit<Order, "id" | "status" | "createdAt" | "updatedAt">): string {
-    const id = `ET-${Date.now().toString().slice(-6)}`;
-    const now = new Date().toISOString();
-    const order: Order = { ...data, id, status: "pending", createdAt: now, updatedAt: now };
-    const updated = [order, ...orders];
-    save(updated);
-    setOrders(updated);
-    return id;
+  async function placeOrder(
+    data: Omit<Order, "id" | "status" | "createdAt" | "updatedAt">
+  ): Promise<string> {
+    const res = await fetch("/api/orders", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    const order: Order = await res.json();
+    setOrders((prev) => [order, ...prev]);
+    return order.id;
   }
 
-  function updateOrderStatus(id: string, status: OrderStatus) {
+  async function updateOrderStatus(id: string, status: OrderStatus): Promise<void> {
     const now = new Date().toISOString();
-    const updated = orders.map((o) =>
-      o.id === id ? { ...o, status, updatedAt: now } : o
+    // Optimistic update
+    setOrders((prev) =>
+      prev.map((o) => (o.id === id ? { ...o, status, updatedAt: now } : o))
     );
-    save(updated);
-    setOrders(updated);
+    await fetch(`/api/orders/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status }),
+    });
   }
 
   function getUserOrders(userId: string | null, email: string): Order[] {
@@ -113,7 +118,9 @@ export function OrderProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <OrderContext.Provider value={{ orders, placeOrder, updateOrderStatus, getUserOrders }}>
+    <OrderContext.Provider
+      value={{ orders, placeOrder, updateOrderStatus, getUserOrders, refreshOrders: fetchOrders }}
+    >
       {children}
     </OrderContext.Provider>
   );

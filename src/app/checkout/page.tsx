@@ -63,9 +63,8 @@ export default function CheckoutPage() {
     if (Object.keys(errs).length) { setErrors(errs); return; }
 
     setPlacing(true);
-    await new Promise((r) => setTimeout(r, 1400));
 
-    const orderId = placeOrder({
+    const orderId = await placeOrder({
       userId: session?.user?.email ?? null,
       userName: `${form.firstName} ${form.lastName}`,
       userEmail: form.email,

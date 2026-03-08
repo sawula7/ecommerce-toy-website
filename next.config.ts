@@ -11,9 +11,9 @@ const securityHeaders = [
       "default-src 'self'",
       "script-src 'self' 'unsafe-inline' 'unsafe-eval'", // unsafe-inline/eval needed by Next.js dev; tighten in prod
       "style-src 'self' 'unsafe-inline'",
-      "img-src 'self' data: https://images.unsplash.com",
-      "font-src 'self'",
-      "connect-src 'self'",
+      "img-src 'self' data: https:",
+      "font-src 'self' https://fonts.gstatic.com",
+      "connect-src 'self' https:",
       "frame-ancestors 'none'",
     ].join("; "),
   },
@@ -21,13 +21,8 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-        pathname: "/**",
-      },
-    ],
+    // Allow any HTTPS image host so admin-added products can use any CDN
+    remotePatterns: [{ protocol: "https", hostname: "**" }],
   },
   async headers() {
     return [
