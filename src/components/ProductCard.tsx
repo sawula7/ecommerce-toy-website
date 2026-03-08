@@ -17,13 +17,12 @@ interface Props {
 }
 
 export default function ProductCard({ product }: Props) {
-  const { addToCart, openCart } = useCart();
+  const { addToCart } = useCart();
   const [wishlisted, setWishlisted] = useState(false);
   const [added, setAdded] = useState(false);
 
   function handleAdd() {
     addToCart(product);
-    openCart();
     setAdded(true);
     setTimeout(() => setAdded(false), 1500);
   }
