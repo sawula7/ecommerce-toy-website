@@ -4,7 +4,7 @@ import { useState } from "react";
 import ProductCard from "./ProductCard";
 import { products } from "@/data/products";
 
-const tabs = ["All", "STEM Toys", "DIY Puzzles", "Montessori", "Wooden Toys", "Arts & Crafts"];
+const tabs = ["All", "STEM Toys", "DIY Puzzles", "Wooden Toys"];
 
 export default function ProductsSection() {
   const [activeTab, setActiveTab] = useState("All");

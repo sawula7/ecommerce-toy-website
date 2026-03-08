@@ -10,15 +10,15 @@ export default function TopBar() {
           <span>📞 0777489034</span>
         </div>
         <div className="flex items-center gap-3 flex-wrap">
-          <a href="#" className="hover:text-secondary transition-colors">
-            Free Delivery on Orders over Rs.&nbsp;5,000
+          <a href="/faq" className="hover:text-secondary transition-colors">
+            FAQ
           </a>
           <span className="text-gray-600">|</span>
-          <a href="#" className="hover:text-secondary transition-colors">
-            Track Order
+          <a href="/refund-returns" className="hover:text-secondary transition-colors">
+            Returns Policy
           </a>
           <span className="text-gray-600">|</span>
-          <a href="#" className="hover:text-secondary transition-colors">
+          <a href="/login" className="hover:text-secondary transition-colors">
             My Account
           </a>
         </div>

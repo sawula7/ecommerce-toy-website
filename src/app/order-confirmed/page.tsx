@@ -47,10 +47,10 @@ export default function OrderConfirmedPage() {
           Continue Shopping
         </Link>
         <Link
-          href="/"
+          href="/faq"
           className="border-2 border-primary text-primary hover:bg-primary hover:text-white font-bold px-8 py-3.5 rounded-full transition-all hover:-translate-y-0.5"
         >
-          Track My Order
+          Help &amp; FAQ
         </Link>
       </div>
 

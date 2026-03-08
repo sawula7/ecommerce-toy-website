@@ -59,22 +59,6 @@ export const products: Product[] = [
     ],
   },
   {
-    id: 3,
-    name: "Montessori Sensory Sorting Tray",
-    category: "Montessori",
-    price: 1990,
-    rating: 5,
-    reviews: 24,
-    image:
-      "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?w=400&h=350&fit=crop&auto=format",
-    badge: "new",
-    description:
-      "Authentic Montessori sorting tray with coloured pegs, shapes, and textures. Perfect for developing concentration and fine motor skills in toddlers.",
-    ageRange: "1–3 Years",
-    material: "Natural rubber wood, food-safe paint",
-    includes: ["Sorting tray", "20 coloured pegs", "Shape sorters", "Guide"],
-  },
-  {
     id: 4,
     name: "DIY Wooden Airplane Assembly Kit",
     category: "STEM Toys",
@@ -153,29 +137,6 @@ export const products: Product[] = [
       "Assembly guide",
     ],
   },
-  {
-    id: 8,
-    name: "Creative Artist Deluxe Craft Set",
-    category: "Arts & Crafts",
-    price: 2480,
-    oldPrice: 3100,
-    rating: 5,
-    reviews: 27,
-    image:
-      "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=400&h=350&fit=crop&auto=format",
-    badge: "sale",
-    description:
-      "A comprehensive arts and crafts set with everything a young artist needs to express their creativity. Non-toxic materials, suitable for all skill levels.",
-    ageRange: "3+ Years",
-    material: "Non-toxic materials, CE certified",
-    includes: [
-      "24 coloured pencils",
-      "Watercolour paints",
-      "Sketch pad",
-      "Craft scissors",
-      "Stencils",
-    ],
-  },
 ];
 
 export const categories = [
@@ -194,45 +155,10 @@ export const categories = [
     alt: "3D wooden puzzles",
   },
   {
-    name: "Montessori",
-    count: 120,
-    image:
-      "https://images.unsplash.com/photo-1560859251-d563a49c5e4a?w=300&h=300&fit=crop&auto=format",
-    alt: "Montessori materials",
-  },
-  {
     name: "Wooden Toys",
     count: 85,
     image:
       "https://images.unsplash.com/photo-1617096200347-cb04ae810b1d?w=300&h=300&fit=crop&auto=format",
     alt: "Wooden educational toys",
-  },
-  {
-    name: "Arts & Crafts",
-    count: 95,
-    image:
-      "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=300&h=300&fit=crop&auto=format",
-    alt: "Arts and crafts for kids",
-  },
-  {
-    name: "Teaching Aids",
-    count: 50,
-    image:
-      "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=300&h=300&fit=crop&auto=format",
-    alt: "Teaching aids and educational tools",
-  },
-  {
-    name: "Children's Books",
-    count: 70,
-    image:
-      "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=300&h=300&fit=crop&auto=format",
-    alt: "Children's books",
-  },
-  {
-    name: "Furniture",
-    count: 30,
-    image:
-      "https://images.unsplash.com/photo-1555861496-0666c8981751?w=300&h=300&fit=crop&auto=format",
-    alt: "Preschool furniture",
   },
 ];

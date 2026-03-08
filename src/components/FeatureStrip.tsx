@@ -1,9 +1,9 @@
 const features = [
-  { icon: "🚚", title: "Free Delivery", desc: "On orders over Rs. 5,000" },
-  { icon: "🔄", title: "Easy Returns", desc: "30-day return policy" },
-  { icon: "🔒", title: "Secure Payments", desc: "100% protected checkout" },
-  { icon: "🌍", title: "Worldwide Shipping", desc: "Delivered to your door" },
-  { icon: "🎁", title: "Gift Wrapping", desc: "Available on all orders" },
+  { icon: "🚚", title: "Island-wide Delivery", desc: "Rs. 350 flat fee, all districts" },
+  { icon: "🔄", title: "Easy Returns",          desc: "7-day return policy" },
+  { icon: "🔒", title: "Secure Payments",       desc: "100% protected checkout" },
+  { icon: "🌿", title: "Eco-friendly Toys",     desc: "Sustainably sourced wood" },
+  { icon: "🎁", title: "Gift Wrapping",         desc: "Available on all orders" },
 ];
 
 export default function FeatureStrip() {

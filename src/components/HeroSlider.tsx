@@ -16,17 +16,6 @@ const slides = [
     ctaSecondary: "See Categories",
   },
   {
-    badge: "Montessori Collection",
-    title: "Nurture",
-    titleHighlight: "Little Minds",
-    desc: "Authentic Montessori materials crafted to build independence, concentration, and a lifelong love of learning.",
-    bg: "from-[#fff0f5] to-[#ffd6e6]",
-    img: "https://images.unsplash.com/photo-1576828831022-ca41d3905fb7?w=620&h=500&fit=crop&auto=format",
-    imgAlt: "Montessori learning materials for children",
-    cta: "Explore Montessori",
-    ctaSecondary: "Learn More",
-  },
-  {
     badge: "Handmade in Sri Lanka",
     title: "Artisan",
     titleHighlight: "Wooden Toys",

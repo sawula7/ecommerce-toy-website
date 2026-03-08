@@ -1,29 +1,22 @@
+import Link from "next/link";
+
 const shopLinks = [
-  "DIY STEM Kits",
-  "Wooden Toys",
-  "Montessori Materials",
-  "Teaching Aids",
-  "STEM Toys",
-  "Arts & Crafts",
-  "Children's Books",
-  "Preschool Furniture",
+  { label: "DIY STEM Kits",   href: "/#products" },
+  { label: "Wooden Toys",     href: "/#products" },
+  { label: "DIY Puzzles",     href: "/#products" },
+  { label: "STEM Toys",       href: "/#products" },
 ];
+
 const careLinks = [
-  "My Account",
-  "Track My Order",
-  "Wishlist",
-  "Returns & Exchanges",
-  "Shipping Info",
-  "FAQ",
-  "Free Downloads",
+  { label: "My Account",          href: "/login" },
+  { label: "Returns & Exchanges", href: "/refund-returns" },
+  { label: "FAQ",                 href: "/faq" },
 ];
-const companyLinks = [
-  "About Us",
-  "Blog",
-  "Careers",
-  "Privacy Policy",
-  "Terms & Conditions",
-  "Contact Us",
+
+const policyLinks = [
+  { label: "Privacy Policy",   href: "/privacy-policy" },
+  { label: "Refund & Returns", href: "/refund-returns" },
+  { label: "FAQ",              href: "/faq" },
 ];
 
 export default function Footer() {
@@ -63,10 +56,10 @@ export default function Footer() {
           <h4 className="text-xs font-bold text-white uppercase tracking-widest mb-5">Shop</h4>
           <ul className="space-y-2.5">
             {shopLinks.map((l) => (
-              <li key={l}>
-                <a href="#" className="text-sm hover:text-primary hover:pl-1 transition-all">
-                  {l}
-                </a>
+              <li key={l.label}>
+                <Link href={l.href} className="text-sm hover:text-primary hover:pl-1 transition-all">
+                  {l.label}
+                </Link>
               </li>
             ))}
           </ul>
@@ -77,10 +70,10 @@ export default function Footer() {
           <h4 className="text-xs font-bold text-white uppercase tracking-widest mb-5">Customer Care</h4>
           <ul className="space-y-2.5">
             {careLinks.map((l) => (
-              <li key={l}>
-                <a href="#" className="text-sm hover:text-primary hover:pl-1 transition-all">
-                  {l}
-                </a>
+              <li key={l.label}>
+                <Link href={l.href} className="text-sm hover:text-primary hover:pl-1 transition-all">
+                  {l.label}
+                </Link>
               </li>
             ))}
           </ul>
@@ -98,6 +91,13 @@ export default function Footer() {
             <p className="text-xs font-bold text-white mb-1">Store Hours</p>
             <p className="text-xs text-gray-500">Mon–Sat: 9am – 6pm</p>
             <p className="text-xs text-gray-500">Sunday: 10am – 4pm</p>
+          </div>
+          <div className="mt-5 flex flex-col gap-1.5">
+            {policyLinks.map((l) => (
+              <Link key={l.label} href={l.href} className="text-xs text-gray-500 hover:text-primary transition-colors">
+                {l.label}
+              </Link>
+            ))}
           </div>
         </div>
 

@@ -18,17 +18,6 @@ const navItems = [
     ],
   },
   {
-    label: "Montessori",
-    children: [
-      "Practical Life",
-      "Sensorial",
-      "Language",
-      "Mathematics",
-      "Geography",
-      "Montessori Toddler",
-    ],
-  },
-  {
     label: "STEM Toys",
     children: [
       "Gears & Mechanics",
@@ -38,15 +27,7 @@ const navItems = [
     ],
   },
   { label: "Wooden Toys", children: [] },
-  { label: "Arts & Crafts", children: [] },
-  {
-    label: "Books",
-    children: ["Story Books", "Activity Books", "Cloth Books"],
-  },
-  {
-    label: "Furniture",
-    children: ["Infant & Toddler", "Preschool", "Storage"],
-  },
+  { label: "DIY Puzzles", children: [] },
   {
     label: "Shop by Age",
     children: ["0–1 Years", "1–3 Years", "3–5 Years", "5+ Years"],
