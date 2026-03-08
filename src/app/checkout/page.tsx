@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 
-const DELIVERY_THRESHOLD = 5000;
 const DELIVERY_FEE = 350;
 
 type PaymentMethod = "card" | "cod" | "bank";
@@ -14,7 +13,7 @@ type PaymentMethod = "card" | "cod" | "bank";
 export default function CheckoutPage() {
   const router = useRouter();
   const { items, subtotal, clearCart } = useCart();
-  const deliveryFee = subtotal >= DELIVERY_THRESHOLD ? 0 : DELIVERY_FEE;
+  const deliveryFee = DELIVERY_FEE;
   const total = subtotal + deliveryFee;
 
   const [form, setForm] = useState({
@@ -256,9 +255,7 @@ export default function CheckoutPage() {
                   </div>
                   <div className="flex justify-between text-gray-500">
                     <span>Delivery</span>
-                    <span className={deliveryFee === 0 ? "text-green-600 font-semibold" : ""}>
-                      {deliveryFee === 0 ? "FREE" : `Rs.&nbsp;${deliveryFee.toLocaleString()}`}
-                    </span>
+                    <span>Rs.&nbsp;{deliveryFee.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between font-extrabold text-gray-900 text-base mt-2 pt-3 border-t border-gray-100">
                     <span>Total</span>

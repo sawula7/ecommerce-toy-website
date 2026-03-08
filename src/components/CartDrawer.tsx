@@ -5,13 +5,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 
-const DELIVERY_THRESHOLD = 5000;
 const DELIVERY_FEE = 350;
 
 export default function CartDrawer() {
   const { items, isOpen, subtotal, totalItems, removeFromCart, setQuantity, closeCart } = useCart();
 
-  const deliveryFee = subtotal >= DELIVERY_THRESHOLD ? 0 : DELIVERY_FEE;
+  const deliveryFee = DELIVERY_FEE;
   const total = subtotal + deliveryFee;
 
   // Lock body scroll when open
@@ -62,29 +61,6 @@ export default function CartDrawer() {
           </button>
         </div>
 
-        {/* Free delivery progress bar */}
-        {subtotal < DELIVERY_THRESHOLD && (
-          <div className="px-5 py-3 bg-primary-lt text-sm">
-            <p className="text-gray-700 mb-1.5">
-              Add{" "}
-              <strong className="text-primary">
-                Rs.&nbsp;{(DELIVERY_THRESHOLD - subtotal).toLocaleString()}
-              </strong>{" "}
-              more for <strong>FREE delivery</strong>!
-            </p>
-            <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-primary rounded-full transition-all duration-500"
-                style={{ width: `${Math.min((subtotal / DELIVERY_THRESHOLD) * 100, 100)}%` }}
-              />
-            </div>
-          </div>
-        )}
-        {subtotal >= DELIVERY_THRESHOLD && (
-          <div className="px-5 py-2 bg-green-50 text-green-700 text-sm font-semibold text-center">
-            🎉 You&apos;ve unlocked FREE delivery!
-          </div>
-        )}
 
         {/* Items list */}
         <div className="flex-1 overflow-y-auto px-5 py-4">
@@ -177,9 +153,7 @@ export default function CartDrawer() {
             </div>
             <div className="flex justify-between text-sm text-gray-500">
               <span>Delivery</span>
-              <span className={deliveryFee === 0 ? "text-green-600 font-semibold" : ""}>
-                {deliveryFee === 0 ? "FREE" : `Rs.&nbsp;${deliveryFee.toLocaleString()}`}
-              </span>
+              <span>Rs.&nbsp;{deliveryFee.toLocaleString()}</span>
             </div>
             <div className="flex justify-between font-extrabold text-gray-900 text-base border-t border-gray-100 pt-3">
               <span>Total</span>
