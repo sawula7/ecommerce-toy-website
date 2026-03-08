@@ -55,9 +55,5 @@ export const authOptions: NextAuthOptions = {
   ],
   pages: { signIn: "/login" },
   session: { strategy: "jwt" },
-  secret: (() => {
-    const secret = process.env.NEXTAUTH_SECRET;
-    if (!secret) throw new Error("NEXTAUTH_SECRET environment variable is not set.");
-    return secret;
-  })(),
+  secret: process.env.NEXTAUTH_SECRET,
 };
