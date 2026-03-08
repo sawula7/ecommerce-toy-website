@@ -2,7 +2,7 @@ import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 
 const raw = new DynamoDBClient({
-  region: process.env.AWS_REGION ?? "ap-south-1",
+  region: process.env.AWS_REGION ?? "ap-southeast-1",
   // When running on Amplify the IAM role provides credentials automatically.
   // Locally, set AWS_ACCESS_KEY_ID + AWS_SECRET_ACCESS_KEY in .env.local.
   ...(process.env.AWS_ACCESS_KEY_ID
