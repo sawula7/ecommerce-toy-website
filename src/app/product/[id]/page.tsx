@@ -6,6 +6,9 @@ import Link from "next/link";
 import { use, useState } from "react";
 import { products } from "@/data/products";
 import { useCart } from "@/context/CartContext";
+import TopBar from "@/components/TopBar";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 const DELIVERY_FEE = 350;
 
@@ -40,6 +43,9 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
   }
 
   return (
+    <>
+    <TopBar />
+    <Header />
     <div className="min-h-screen bg-gray-50">
       {/* Top bar */}
       <div className="bg-white border-b border-gray-100 px-4 py-3">
@@ -302,5 +308,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
         )}
       </div>
     </div>
+    <Footer />
+    </>
   );
 }
