@@ -12,6 +12,7 @@ export interface Product {
   ageRange: string;
   material: string;
   includes: string[];
+  stock: number;
 }
 
 export const products: Product[] = [
@@ -35,6 +36,7 @@ export const products: Product[] = [
       "Non-toxic paint set",
       "Sandpaper",
     ],
+    stock: 12,
   },
   {
     id: 2,
@@ -57,6 +59,7 @@ export const products: Product[] = [
       "Glue",
       "Display stand",
     ],
+    stock: 0,
   },
   {
     id: 4,
@@ -77,6 +80,7 @@ export const products: Product[] = [
       "Brushes",
       "Assembly manual",
     ],
+    stock: 8,
   },
   {
     id: 5,
@@ -99,6 +103,7 @@ export const products: Product[] = [
       "Activity cards",
       "Storage bag",
     ],
+    stock: 5,
   },
   {
     id: 6,
@@ -115,6 +120,7 @@ export const products: Product[] = [
     ageRange: "1+ Years",
     material: "Rubber wood, water-based paints",
     includes: ["10 rainbow arches", "Stacking base", "Activity booklet"],
+    stock: 20,
   },
   {
     id: 7,
@@ -136,6 +142,7 @@ export const products: Product[] = [
       "Waterproof paint",
       "Assembly guide",
     ],
+    stock: 3,
   },
 ];
 

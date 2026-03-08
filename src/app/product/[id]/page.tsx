@@ -22,7 +22,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
   const { id } = use(params);
   const product = products.find((p) => p.id === Number(id));
 
-  const { addToCart, openCart } = useCart();
+  const { addToCart } = useCart();
 
   if (!product) notFound();
   // product is defined from here — notFound() throws but TS doesn't infer it
@@ -37,9 +37,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
 
   function handleAdd() {
     for (let i = 0; i < qty; i++) addToCart(p);
-    openCart();
     setAdded(true);
-    setTimeout(() => setAdded(false), 1800);
   }
 
   return (
@@ -162,21 +160,33 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
 
             {/* CTA buttons */}
             <div className="flex gap-3 mb-6">
-              <button
-                onClick={handleAdd}
-                className={`flex-1 font-bold py-4 rounded-2xl text-base transition-all hover:-translate-y-0.5 active:scale-95 shadow-md ${
-                  added ? "bg-green-500 text-white" : "bg-primary hover:bg-primary-dk text-white"
-                }`}
-              >
-                {added ? "✓ Added to Cart!" : "Add to Cart"}
-              </button>
-              <Link
-                href="/checkout"
-                onClick={() => { for (let i = 0; i < qty; i++) addToCart(p); }}
-                className="flex-1 border-2 border-primary text-primary hover:bg-primary hover:text-white font-bold py-4 rounded-2xl text-base text-center transition-all hover:-translate-y-0.5"
-              >
-                Buy Now
-              </Link>
+              {p.stock === 0 ? (
+                <button
+                  disabled
+                  className="flex-1 font-bold py-4 rounded-2xl text-base bg-gray-200 text-gray-400 cursor-not-allowed"
+                >
+                  Out of Stock
+                </button>
+              ) : (
+                <>
+                  <button
+                    onClick={handleAdd}
+                    disabled={added}
+                    className={`flex-1 font-bold py-4 rounded-2xl text-base transition-all hover:-translate-y-0.5 active:scale-95 shadow-md ${
+                      added ? "bg-green-500 text-white cursor-default" : "bg-primary hover:bg-primary-dk text-white"
+                    }`}
+                  >
+                    {added ? "✓ Added to Cart!" : "Add to Cart"}
+                  </button>
+                  <Link
+                    href="/checkout"
+                    onClick={() => { for (let i = 0; i < qty; i++) addToCart(p); }}
+                    className="flex-1 border-2 border-primary text-primary hover:bg-primary hover:text-white font-bold py-4 rounded-2xl text-base text-center transition-all hover:-translate-y-0.5"
+                  >
+                    Buy Now
+                  </Link>
+                </>
+              )}
             </div>
 
             {/* Delivery & safety */}

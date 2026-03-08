@@ -24,7 +24,6 @@ export default function ProductCard({ product }: Props) {
   function handleAdd() {
     addToCart(product);
     setAdded(true);
-    setTimeout(() => setAdded(false), 1500);
   }
 
   return (
@@ -91,16 +90,26 @@ export default function ProductCard({ product }: Props) {
           </span>
         </div>
 
-        <button
-          onClick={handleAdd}
-          className={`w-full font-bold py-2.5 rounded-xl text-sm transition-all hover:-translate-y-0.5 active:scale-95 ${
-            added
-              ? "bg-green-500 text-white"
-              : "bg-primary hover:bg-primary-dk text-white"
-          }`}
-        >
-          {added ? "✓ Added to Cart!" : "Add to Cart"}
-        </button>
+        {product.stock === 0 ? (
+          <button
+            disabled
+            className="w-full font-bold py-2.5 rounded-xl text-sm bg-gray-200 text-gray-400 cursor-not-allowed"
+          >
+            Out of Stock
+          </button>
+        ) : (
+          <button
+            onClick={handleAdd}
+            disabled={added}
+            className={`w-full font-bold py-2.5 rounded-xl text-sm transition-all hover:-translate-y-0.5 active:scale-95 ${
+              added
+                ? "bg-green-500 text-white cursor-default"
+                : "bg-primary hover:bg-primary-dk text-white"
+            }`}
+          >
+            {added ? "✓ Added to Cart!" : "Add to Cart"}
+          </button>
+        )}
       </div>
     </div>
   );
