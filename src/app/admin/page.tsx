@@ -13,7 +13,7 @@ import {
 } from "@/context/OrderContext";
 import { Product } from "@/data/products";
 
-const ADMIN_EMAIL = "admin@edutoys.lk";
+const ADMIN_EMAIL = "admin@toyhouse.lk";
 
 const ALL_STATUSES: OrderStatus[] = [
   "pending",
