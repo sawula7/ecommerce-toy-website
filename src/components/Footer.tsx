@@ -90,9 +90,8 @@ export default function Footer() {
         <div>
           <h4 className="text-xs font-bold text-white uppercase tracking-widest mb-5">Contact</h4>
           <address className="not-italic space-y-3 text-sm text-gray-500">
-            <p>📍 123 Learning Lane<br />Colombo 10, Sri Lanka</p>
-            <p>📞 <a href="tel:+94742624020" className="hover:text-orange-400">+94 74 262 4020</a></p>
-            <p>📞 <a href="tel:+94112677558" className="hover:text-orange-400">+94 11 267 7558</a></p>
+            <p>📍 281/D/5, St Marys Road<br />Welivita, Kaduwela</p>
+            <p>📞 <a href="tel:0777489034" className="hover:text-orange-400">0777489034</a></p>
             <p>✉️ <a href="mailto:info@edutoys.lk" className="hover:text-orange-400">info@edutoys.lk</a></p>
           </address>
           <div className="mt-5">
