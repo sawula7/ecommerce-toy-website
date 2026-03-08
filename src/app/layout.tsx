@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import SessionProviderWrapper from "@/components/SessionProviderWrapper";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -24,7 +25,7 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased">
-        {children}
+        <SessionProviderWrapper>{children}</SessionProviderWrapper>
       </body>
     </html>
   );

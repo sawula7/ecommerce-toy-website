@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { useSession, signOut } from "next-auth/react";
+import Link from "next/link";
+import Image from "next/image";
 
 const navItems = [
   {
@@ -51,15 +54,19 @@ const navItems = [
 ];
 
 export default function Header() {
+  const { data: session, status } = useSession();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+
+  const userInitial = session?.user?.name?.[0]?.toUpperCase() ?? "?";
 
   return (
     <header className="bg-white sticky top-0 z-50 shadow-md">
       {/* Main header row */}
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-4 flex-wrap">
         {/* Logo */}
-        <a href="/" className="flex items-center gap-2 shrink-0">
+        <Link href="/" className="flex items-center gap-2 shrink-0">
           <span className="text-4xl">🧸</span>
           <div className="flex flex-col leading-none">
             <span
@@ -72,7 +79,7 @@ export default function Header() {
               LEARN · PLAY · GROW
             </span>
           </div>
-        </a>
+        </Link>
 
         {/* Search */}
         <div className="flex flex-1 max-w-2xl border-2 border-gray-200 rounded-full overflow-hidden focus-within:border-orange-500 transition-colors min-w-[180px]">
@@ -88,31 +95,93 @@ export default function Header() {
 
         {/* Actions */}
         <div className="flex items-center gap-1 ml-auto">
-          {[
-            { icon: "♡", label: "Wishlist" },
-            { icon: "👤", label: "Account" },
-          ].map((a) => (
-            <a
-              key={a.label}
-              href="#"
-              className="flex flex-col items-center px-3 py-2 rounded-xl hover:bg-gray-50 transition-colors text-center"
-            >
-              <span className="text-xl leading-none">{a.icon}</span>
-              <span className="text-[10px] text-gray-400 font-semibold mt-0.5">
-                {a.label}
-              </span>
-            </a>
-          ))}
+          {/* Wishlist */}
+          <a
+            href="#"
+            className="flex flex-col items-center px-3 py-2 rounded-xl hover:bg-gray-50 transition-colors text-center"
+          >
+            <span className="text-xl leading-none">♡</span>
+            <span className="text-[10px] text-gray-400 font-semibold mt-0.5">Wishlist</span>
+          </a>
+
+          {/* Account / User */}
+          {status === "loading" ? (
+            <div className="w-10 h-10 rounded-xl bg-gray-100 animate-pulse" />
+          ) : session ? (
+            <div className="relative">
+              <button
+                onClick={() => setUserMenuOpen(!userMenuOpen)}
+                className="flex flex-col items-center px-2 py-2 rounded-xl hover:bg-gray-50 transition-colors"
+              >
+                {session.user?.image ? (
+                  <Image
+                    src={session.user.image}
+                    alt={session.user.name ?? "User"}
+                    width={32}
+                    height={32}
+                    className="rounded-full border-2 border-orange-300"
+                  />
+                ) : (
+                  <div className="w-8 h-8 rounded-full bg-orange-500 text-white font-bold text-sm flex items-center justify-center">
+                    {userInitial}
+                  </div>
+                )}
+                <span className="text-[10px] text-gray-400 font-semibold mt-0.5 max-w-[60px] truncate">
+                  {session.user?.name?.split(" ")[0]}
+                </span>
+              </button>
+
+              {userMenuOpen && (
+                <div className="absolute right-0 top-full mt-2 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 min-w-[180px] z-50">
+                  <div className="px-4 py-2 border-b border-gray-100">
+                    <p className="text-sm font-bold text-gray-800 truncate">{session.user?.name}</p>
+                    <p className="text-xs text-gray-400 truncate">{session.user?.email}</p>
+                  </div>
+                  <a href="#" className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-500 transition-colors">
+                    My Account
+                  </a>
+                  <a href="#" className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-500 transition-colors">
+                    My Orders
+                  </a>
+                  <a href="#" className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-500 transition-colors">
+                    Wishlist
+                  </a>
+                  <div className="border-t border-gray-100 mt-1 pt-1">
+                    <button
+                      onClick={() => signOut({ callbackUrl: "/" })}
+                      className="w-full text-left px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 transition-colors"
+                    >
+                      Sign Out
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              <Link
+                href="/login"
+                className="text-sm font-bold text-gray-600 hover:text-orange-500 px-3 py-2 rounded-xl hover:bg-gray-50 transition-colors"
+              >
+                Sign In
+              </Link>
+              <Link
+                href="/register"
+                className="text-sm font-bold bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-full transition-colors"
+              >
+                Register
+              </Link>
+            </div>
+          )}
+
           {/* Cart */}
           <a
             href="#"
             className="relative flex flex-col items-center px-3 py-2 rounded-xl hover:bg-gray-50 transition-colors"
           >
             <span className="text-xl leading-none">🛒</span>
-            <span className="text-[10px] text-gray-400 font-semibold mt-0.5">
-              Cart
-            </span>
-            <span className="absolute top-1 right-1.5 bg-orange-500 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+            <span className="text-[10px] text-gray-400 font-semibold mt-0.5">Cart</span>
+            <span className="cart-count-badge absolute top-1 right-1.5 bg-orange-500 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
               0
             </span>
           </a>
@@ -137,9 +206,7 @@ export default function Header() {
                 <button
                   className="w-full text-left flex items-center justify-between md:justify-start gap-1 px-4 py-3 text-white text-sm font-bold whitespace-nowrap hover:bg-black/15 transition-colors"
                   onClick={() =>
-                    setOpenDropdown(
-                      openDropdown === item.label ? null : item.label
-                    )
+                    setOpenDropdown(openDropdown === item.label ? null : item.label)
                   }
                 >
                   {item.label}
@@ -172,6 +239,11 @@ export default function Header() {
           </ul>
         </div>
       </nav>
+
+      {/* Close user menu on outside click */}
+      {userMenuOpen && (
+        <div className="fixed inset-0 z-40" onClick={() => setUserMenuOpen(false)} />
+      )}
     </header>
   );
 }
