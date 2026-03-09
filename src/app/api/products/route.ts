@@ -1,7 +1,8 @@
+import { auth } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
+
 import { ScanCommand, PutCommand } from "@aws-sdk/lib-dynamodb";
-import { authOptions } from "@/lib/auth";
+
 import { db, PRODUCTS_TABLE } from "@/lib/dynamodb";
 import { products as staticProducts } from "@/data/products";
 
@@ -26,7 +27,7 @@ export async function GET() {
 
 // POST /api/products — add new product (admin only)
 export async function POST(req: NextRequest) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if (!["admin", "manager"].includes(session?.user?.role ?? "")) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }

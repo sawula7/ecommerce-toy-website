@@ -1,7 +1,7 @@
-import type { NextAuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import GoogleProvider from "next-auth/providers/google";
-import FacebookProvider from "next-auth/providers/facebook";
+import NextAuth from "next-auth";
+import Credentials from "next-auth/providers/credentials";
+import Google from "next-auth/providers/google";
+import Facebook from "next-auth/providers/facebook";
 import bcrypt from "bcryptjs";
 import { GetCommand, PutCommand } from "@aws-sdk/lib-dynamodb";
 import { db, USERS_TABLE } from "@/lib/dynamodb";
@@ -26,24 +26,22 @@ export async function registerUser(name: string, email: string, password: string
   return { id: user.id, name: user.name, email: user.email, role: user.role };
 }
 
-export const authOptions: NextAuthOptions = {
+export const { handlers, auth } = NextAuth({
   providers: [
-    // Only register OAuth providers when their credentials are configured —
-    // passing empty strings causes NextAuth to throw a server error.
+    // Only register OAuth providers when their credentials are configured
     ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
-      ? [GoogleProvider({
+      ? [Google({
           clientId: process.env.GOOGLE_CLIENT_ID,
           clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         })]
       : []),
     ...(process.env.FACEBOOK_CLIENT_ID && process.env.FACEBOOK_CLIENT_SECRET
-      ? [FacebookProvider({
+      ? [Facebook({
           clientId: process.env.FACEBOOK_CLIENT_ID,
           clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
         })]
       : []),
-    CredentialsProvider({
-      name: "Email & Password",
+    Credentials({
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
@@ -56,7 +54,7 @@ export const authOptions: NextAuthOptions = {
           );
           const user = result.Item as StoredUser | undefined;
           if (!user) return null;
-          const valid = await bcrypt.compare(credentials.password, user.passwordHash);
+          const valid = await bcrypt.compare(credentials.password as string, user.passwordHash);
           if (!valid) return null;
           return { id: user.id, name: user.name, email: user.email, role: user.role ?? "user" };
         } catch (err) {
@@ -68,8 +66,6 @@ export const authOptions: NextAuthOptions = {
   ],
   pages: { signIn: "/login" },
   session: { strategy: "jwt" },
-  // NEXTAUTH_SECRET must be set in Amplify env vars.
-  // Fallback keeps the app running but sessions won't persist across Lambda cold starts.
   secret: process.env.NEXTAUTH_SECRET ?? "edutoys-fallback-secret-set-NEXTAUTH_SECRET-in-amplify",
   callbacks: {
     async jwt({ token, user }) {
@@ -85,4 +81,4 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
-};
+});

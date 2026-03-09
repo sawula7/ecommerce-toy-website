@@ -1,6 +1,7 @@
+import { auth } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+
+
 import { getUploadPresignedUrl } from "@/lib/s3";
 
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif", "video/mp4", "video/webm"];
@@ -8,7 +9,7 @@ const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif", "vi
 // POST /api/upload — admin/manager only; returns a presigned S3 PUT URL.
 // The browser then PUTs the file directly to S3 — file bytes never pass through Lambda.
 export async function POST(req: NextRequest) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if (!["admin", "manager"].includes(session?.user?.role ?? "")) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }

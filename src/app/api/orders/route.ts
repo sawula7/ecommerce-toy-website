@@ -1,12 +1,13 @@
+import { auth } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
+
 import { ScanCommand, PutCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
-import { authOptions } from "@/lib/auth";
+
 import { db, ORDERS_TABLE } from "@/lib/dynamodb";
 
 // GET /api/orders — admin/manager gets all; logged-in user gets their own
 export async function GET() {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if (!session?.user?.email) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
