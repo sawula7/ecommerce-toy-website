@@ -27,6 +27,7 @@ export async function registerUser(name: string, email: string, password: string
 }
 
 export const { handlers, auth } = NextAuth({
+  trustHost: true,
   providers: [
     // Only register OAuth providers when their credentials are configured
     ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
