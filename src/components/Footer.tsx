@@ -33,7 +33,7 @@ export default function Footer() {
               style={{ fontFamily: "var(--font-poppins)" }}
             >
               Toyhouse.lk
-
+            </span>
           </div>
           <p className="text-sm leading-relaxed text-gray-500 mb-6">
             Sri Lanka&apos;s trusted source for DIY wooden STEM toy kits, Montessori materials, special needs resources, and preschool furniture. Fostering creativity and growth in every child.
