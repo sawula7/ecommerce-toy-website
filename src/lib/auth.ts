@@ -28,14 +28,20 @@ export async function registerUser(name: string, email: string, password: string
 
 export const authOptions: NextAuthOptions = {
   providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID ?? "",
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
-    }),
-    FacebookProvider({
-      clientId: process.env.FACEBOOK_CLIENT_ID ?? "",
-      clientSecret: process.env.FACEBOOK_CLIENT_SECRET ?? "",
-    }),
+    // Only register OAuth providers when their credentials are configured —
+    // passing empty strings causes NextAuth to throw a server error.
+    ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
+      ? [GoogleProvider({
+          clientId: process.env.GOOGLE_CLIENT_ID,
+          clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        })]
+      : []),
+    ...(process.env.FACEBOOK_CLIENT_ID && process.env.FACEBOOK_CLIENT_SECRET
+      ? [FacebookProvider({
+          clientId: process.env.FACEBOOK_CLIENT_ID,
+          clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+        })]
+      : []),
     CredentialsProvider({
       name: "Email & Password",
       credentials: {
@@ -57,7 +63,9 @@ export const authOptions: NextAuthOptions = {
   ],
   pages: { signIn: "/login" },
   session: { strategy: "jwt" },
-  secret: process.env.NEXTAUTH_SECRET,
+  // NEXTAUTH_SECRET must be set in Amplify env vars.
+  // Fallback keeps the app running but sessions won't persist across Lambda cold starts.
+  secret: process.env.NEXTAUTH_SECRET ?? "edutoys-fallback-secret-set-NEXTAUTH_SECRET-in-amplify",
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
