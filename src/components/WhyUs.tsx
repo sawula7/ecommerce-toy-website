@@ -16,7 +16,7 @@ export default function WhyUs() {
           {/* Text */}
           <div className="flex-1">
             <span className="text-xs font-bold text-primary uppercase tracking-widest block mb-3">
-              Why EduToys?
+              Why Toyhouse.lk?
             </span>
             <h2
               className="text-3xl md:text-4xl font-bold text-gray-900 leading-snug mb-5"

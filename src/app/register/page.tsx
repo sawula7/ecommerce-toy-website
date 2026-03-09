@@ -72,7 +72,7 @@ export default function RegisterPage() {
             className="text-3xl font-bold text-primary"
             style={{ fontFamily: "var(--font-poppins)" }}
           >
-            EduToys
+            Toyhouse.lk
           </span>
         </Link>
 
@@ -84,7 +84,7 @@ export default function RegisterPage() {
             Create your account
           </h1>
           <p className="text-sm text-gray-400 mb-8">
-            Join thousands of happy EduToys families
+            Join thousands of happy Toyhouse.lk families
           </p>
 
           {/* OAuth buttons */}

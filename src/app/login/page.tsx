@@ -53,7 +53,7 @@ export default function LoginPage() {
             className="text-3xl font-bold text-primary"
             style={{ fontFamily: "var(--font-poppins)" }}
           >
-            EduToys
+            Toyhouse.lk
           </span>
         </Link>
 
@@ -65,7 +65,7 @@ export default function LoginPage() {
             Welcome back!
           </h1>
           <p className="text-sm text-gray-400 mb-8">
-            Sign in to your EduToys account
+            Sign in to your Toyhouse.lk account
           </p>
 
           {/* OAuth buttons — only rendered when the provider is actually configured */}

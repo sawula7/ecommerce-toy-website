@@ -56,7 +56,7 @@ export default function Header() {
               className="text-2xl font-bold text-primary"
               style={{ fontFamily: "var(--font-poppins)" }}
             >
-              EduToys
+              Toyhouse.lk
             </span>
             <span className="text-[10px] text-gray-400 tracking-widest font-semibold">
               LEARN · PLAY · GROW

@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 const sections = [
   {
     title: "1. Introduction",
-    content: `EduToys (Pvt) Ltd ("EduToys", "we", "our", or "us") is committed to protecting your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website www.edutoys.lk or make a purchase from us. Please read this policy carefully. If you disagree with its terms, please discontinue use of our site.`,
+    content: `Toyhouse (Pvt) Ltd ("Toyhouse.lk", "we", "our", or "us") is committed to protecting your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website www.toyhouse.lk or make a purchase from us. Please read this policy carefully. If you disagree with its terms, please discontinue use of our site.`,
   },
   {
     title: "2. Information We Collect",
@@ -127,7 +127,7 @@ export default function PrivacyPolicyPage() {
       <div className="max-w-4xl mx-auto px-4 py-12">
         <div className="bg-white rounded-3xl shadow-sm p-8 md:p-12">
           <p className="text-gray-500 text-sm leading-relaxed mb-10 p-4 bg-primary-lt rounded-xl border-l-4 border-primary">
-            Your privacy is important to us. EduToys is committed to being transparent about how we handle your personal data and to keeping it safe and secure.
+            Your privacy is important to us. Toyhouse.lk is committed to being transparent about how we handle your personal data and to keeping it safe and secure.
           </p>
 
           <div className="flex flex-col gap-10">
@@ -177,10 +177,10 @@ export default function PrivacyPolicyPage() {
 
                 {"contact" in section && section.contact && (
                   <div className="mt-3 bg-gray-50 rounded-xl p-5 text-sm text-gray-600 space-y-1.5">
-                    <p><strong>EduToys (Pvt) Ltd</strong></p>
+                    <p><strong>Toyhouse (Pvt) Ltd</strong></p>
                     <p>281/D/5, St Marys Road, Welivita, Kaduwela, Sri Lanka</p>
                     <p>📞 <a href="tel:0777489034" className="text-primary hover:underline">0777489034</a></p>
-                    <p>✉️ <a href="mailto:info@edutoys.lk" className="text-primary hover:underline">info@edutoys.lk</a></p>
+                    <p>✉️ <a href="mailto:info@toyhouse.lk" className="text-primary hover:underline">info@toyhouse.lk</a></p>
                     <p>🕒 Monday – Saturday: 9am – 6pm</p>
                   </div>
                 )}

@@ -113,7 +113,7 @@ const faqs = [
       },
       {
         q: "How can I contact customer support?",
-        a: "You can reach us by phone at 0777489034 (Mon–Sat, 9am–6pm), by email at info@edutoys.lk, or via WhatsApp at the same number. We aim to respond within 1 business day.",
+        a: "You can reach us by phone at 0777489034 (Mon–Sat, 9am–6pm), by email at info@toyhouse.lk, or via WhatsApp at the same number. We aim to respond within 1 business day.",
       },
       {
         q: "Do you offer bulk or school orders?",
@@ -257,7 +257,7 @@ export default function FaqPage() {
               📞 Call 0777489034
             </a>
             <a
-              href="mailto:info@edutoys.lk"
+              href="mailto:info@toyhouse.lk"
               className="bg-white/20 text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-white/30 transition-colors"
             >
               ✉️ Email Us

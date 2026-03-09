@@ -112,7 +112,7 @@ export default function CheckoutPage() {
           <Link href="/" className="flex items-center gap-2">
             <span className="text-3xl">🧸</span>
             <span className="text-xl font-bold text-primary" style={{ fontFamily: "var(--font-poppins)" }}>
-              EduToys
+              Toyhouse.lk
             </span>
           </Link>
           <span className="text-gray-300">›</span>
@@ -236,7 +236,7 @@ export default function CheckoutPage() {
                 {payment === "bank" && (
                   <div className="mt-5 bg-blue-50 rounded-xl p-4 text-sm text-gray-700 space-y-1">
                     <p><strong>Bank:</strong> Commercial Bank of Ceylon</p>
-                    <p><strong>Account Name:</strong> EduToys Pvt Ltd</p>
+                    <p><strong>Account Name:</strong> Toyhouse (Pvt) Ltd</p>
                     <p><strong>Account No:</strong> 1234567890</p>
                     <p><strong>Branch:</strong> Kaduwela</p>
                     <p className="text-xs text-gray-400 mt-2">Please use your order number as the payment reference. Your order will be processed once payment is confirmed.</p>

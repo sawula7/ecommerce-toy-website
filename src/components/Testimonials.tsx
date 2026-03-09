@@ -14,7 +14,7 @@ const reviews = [
     img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&h=60&fit=crop&auto=format",
   },
   {
-    text: "I bought the STEM gears set for my classroom and the children love it! EduToys service is great, products are affordable and the quality is very high. Highly recommended!",
+    text: "I bought the STEM gears set for my classroom and the children love it! Toyhouse.lk service is great, products are affordable and the quality is very high. Highly recommended!",
     name: "Amara K.",
     role: "Preschool Teacher",
     img: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=60&h=60&fit=crop&auto=format",
@@ -33,7 +33,7 @@ export default function Testimonials() {
             What Parents Say
           </h2>
           <p className="text-gray-400">
-            Thousands of happy families trust EduToys for quality educational products
+            Thousands of happy families trust Toyhouse.lk for quality educational products
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

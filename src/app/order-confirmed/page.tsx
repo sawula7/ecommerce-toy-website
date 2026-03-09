@@ -25,7 +25,7 @@ function OrderConfirmedContent() {
         Order Placed!
       </h1>
       <p className="text-gray-500 text-base max-w-md mb-2">
-        Thank you for shopping with EduToys. Your order has been received and is being processed.
+        Thank you for shopping with Toyhouse.lk. Your order has been received and is being processed.
       </p>
       <p className="text-sm text-gray-400 mb-2">
         Order number:{" "}
@@ -121,7 +121,7 @@ function OrderConfirmedContent() {
 
       <Link href="/" className="flex items-center gap-2 mt-12 opacity-40 hover:opacity-70 transition-opacity">
         <span className="text-2xl">🧸</span>
-        <span className="font-bold text-gray-600" style={{ fontFamily: "var(--font-poppins)" }}>EduToys</span>
+        <span className="font-bold text-gray-600" style={{ fontFamily: "var(--font-poppins)" }}>Toyhouse.lk</span>
       </Link>
     </div>
   );

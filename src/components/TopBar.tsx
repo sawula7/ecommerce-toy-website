@@ -6,7 +6,7 @@ export default function TopBar() {
       <div className="max-w-7xl mx-auto px-4 flex justify-between items-center flex-wrap gap-2">
         <div className="flex items-center gap-4 flex-wrap">
           <span>📍 281/D/5, St Marys Road, Welivita, Kaduwela</span>
-          <span>✉️ info@edutoys.lk</span>
+          <span>✉️ info@toyhouse.lk</span>
           <span>📞 0777489034</span>
         </div>
         <div className="flex items-center gap-3 flex-wrap">

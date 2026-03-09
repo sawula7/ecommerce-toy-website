@@ -32,8 +32,8 @@ export default function Footer() {
               className="text-2xl font-bold text-white"
               style={{ fontFamily: "var(--font-poppins)" }}
             >
-              EduToys
-            </span>
+              Toyhouse.lk
+
           </div>
           <p className="text-sm leading-relaxed text-gray-500 mb-6">
             Sri Lanka&apos;s trusted source for DIY wooden STEM toy kits, Montessori materials, special needs resources, and preschool furniture. Fostering creativity and growth in every child.
@@ -85,7 +85,7 @@ export default function Footer() {
           <address className="not-italic space-y-3 text-sm text-gray-500">
             <p>📍 281/D/5, St Marys Road<br />Welivita, Kaduwela</p>
             <p>📞 <a href="tel:0777489034" className="hover:text-primary">0777489034</a></p>
-            <p>✉️ <a href="mailto:info@edutoys.lk" className="hover:text-primary">info@edutoys.lk</a></p>
+            <p>✉️ <a href="mailto:info@toyhouse.lk" className="hover:text-primary">info@toyhouse.lk</a></p>
           </address>
           <div className="mt-5">
             <p className="text-xs font-bold text-white mb-1">Store Hours</p>
@@ -106,7 +106,7 @@ export default function Footer() {
       {/* Bottom bar */}
       <div className="max-w-7xl mx-auto px-4 py-5 flex flex-col sm:flex-row justify-between items-center gap-3 flex-wrap">
         <p className="text-xs text-gray-600">
-          © 2025 EduToys. All rights reserved. | Designed with ❤️ for little learners.
+          © 2025 Toyhouse.lk. All rights reserved. | Designed with ❤️ for little learners.
         </p>
         <div className="flex gap-2">
           {["VISA", "MC", "PayPal", "Amex"].map((p) => (

@@ -38,7 +38,7 @@ export default function OrdersPage() {
           <Link href="/" className="flex items-center gap-2">
             <span className="text-3xl">🧸</span>
             <span className="text-xl font-bold text-primary" style={{ fontFamily: "var(--font-poppins)" }}>
-              EduToys
+              Toyhouse.lk
             </span>
           </Link>
           <span className="text-gray-300">›</span>

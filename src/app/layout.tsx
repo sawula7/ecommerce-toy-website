@@ -7,7 +7,7 @@ import CartDrawer from "@/components/CartDrawer";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "EduToys – DIY Wooden STEM Toys & Educational Puzzles",
+  title: "Toyhouse.lk – DIY Wooden STEM Toys & Educational Puzzles",
   description:
     "Discover premium DIY wooden STEM toys, assembly puzzles, and Montessori materials for kids. Safe, eco-friendly, and crafted to inspire creativity and learning.",
 };

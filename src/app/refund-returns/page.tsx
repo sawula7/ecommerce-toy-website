@@ -34,7 +34,7 @@ export default function RefundReturnsPage() {
 
           {/* Intro banner */}
           <p className="text-gray-500 text-sm leading-relaxed p-4 bg-primary-lt rounded-xl border-l-4 border-primary">
-            We want you and your little ones to love every EduToys purchase. If something isn't right, we're here to help. Please read our policy below and don't hesitate to contact us.
+            We want you and your little ones to love every Toyhouse.lk purchase. If something isn't right, we're here to help. Please read our policy below and don't hesitate to contact us.
           </p>
 
           {/* 1 */}
@@ -78,7 +78,7 @@ export default function RefundReturnsPage() {
           <Section title="4. How to Initiate a Return">
             <ol className="flex flex-col gap-3 mt-2">
               {[
-                { step: "Step 1", text: "Contact our team via email at info@edutoys.lk or call 0777489034 with your order number and reason for return." },
+                { step: "Step 1", text: "Contact our team via email at info@toyhouse.lk or call 0777489034 with your order number and reason for return." },
                 { step: "Step 2", text: "Our team will review your request and respond within 1–2 business days with return instructions." },
                 { step: "Step 3", text: "Pack the item securely in its original packaging and hand it to our designated courier or drop it off at our store in Kaduwela." },
                 { step: "Step 4", text: "Once we receive and inspect the item, we will process your refund or exchange within 3–5 business days." },
@@ -123,7 +123,7 @@ export default function RefundReturnsPage() {
           {/* 6 */}
           <Section title="6. Return Shipping">
             <List items={[
-              "If the return is due to a defective or incorrect item, EduToys will cover the return shipping cost.",
+              "If the return is due to a defective or incorrect item, Toyhouse.lk will cover the return shipping cost.",
               "If you are returning an item due to a change of mind, you are responsible for the return shipping cost.",
               "We recommend using a trackable shipping method, as we cannot be held responsible for items lost in transit.",
             ]} />
@@ -140,10 +140,10 @@ export default function RefundReturnsPage() {
           <Section title="8. Contact Us">
             <p>If you have any questions about our Refund &amp; Returns Policy, please reach out:</p>
             <div className="mt-3 bg-gray-50 rounded-xl p-5 text-sm text-gray-600 space-y-1.5">
-              <p><strong>EduToys (Pvt) Ltd</strong></p>
+              <p><strong>Toyhouse (Pvt) Ltd</strong></p>
               <p>281/D/5, St Marys Road, Welivita, Kaduwela, Sri Lanka</p>
               <p>📞 <a href="tel:0777489034" className="text-primary hover:underline">0777489034</a></p>
-              <p>✉️ <a href="mailto:info@edutoys.lk" className="text-primary hover:underline">info@edutoys.lk</a></p>
+              <p>✉️ <a href="mailto:info@toyhouse.lk" className="text-primary hover:underline">info@toyhouse.lk</a></p>
               <p>🕒 Monday – Saturday: 9am – 6pm</p>
             </div>
           </Section>
