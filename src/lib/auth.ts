@@ -66,7 +66,7 @@ export const { handlers, auth } = NextAuth({
     }),
   ],
   pages: { signIn: "/login" },
-  session: { strategy: "jwt" },
+  session: { strategy: "jwt", maxAge: 60 * 60 },
   secret: process.env.NEXTAUTH_SECRET ?? "edutoys-fallback-secret-set-NEXTAUTH_SECRET-in-amplify",
   callbacks: {
     async jwt({ token, user }) {
