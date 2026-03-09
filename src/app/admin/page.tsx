@@ -45,13 +45,44 @@ export default function AdminPage() {
   const { orders, updateOrderStatus } = useOrders();
   const { products, addProduct, updateStock } = useProducts();
 
-  const [tab, setTab] = useState<"orders" | "products">("orders");
+  const [tab, setTab] = useState<"orders" | "products" | "users">("orders");
   const [orderFilter, setOrderFilter] = useState<OrderStatus | "all">("all");
   const [newProduct, setNewProduct] = useState<Omit<Product, "id">>(EMPTY_PRODUCT);
   const [includesInput, setIncludesInput] = useState("");
   const [stockEdits, setStockEdits] = useState<Record<number, number>>({});
   const [addSuccess, setAddSuccess] = useState(false);
   const [uploading, setUploading] = useState(false);
+
+  // Users tab state
+  type AdminUser = { id: string; name: string; email: string; role: string };
+  const [users, setUsers] = useState<AdminUser[]>([]);
+  const [usersLoading, setUsersLoading] = useState(false);
+  const [roleUpdating, setRoleUpdating] = useState<string | null>(null);
+  const [expandedUser, setExpandedUser] = useState<string | null>(null);
+
+  async function loadUsers() {
+    setUsersLoading(true);
+    try {
+      const res = await fetch("/api/users");
+      if (res.ok) setUsers(await res.json());
+    } finally {
+      setUsersLoading(false);
+    }
+  }
+
+  async function changeRole(email: string, role: string) {
+    setRoleUpdating(email);
+    try {
+      await fetch(`/api/users/${encodeURIComponent(email)}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ role }),
+      });
+      setUsers((prev) => prev.map((u) => u.email === email ? { ...u, role } : u));
+    } finally {
+      setRoleUpdating(null);
+    }
+  }
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -179,17 +210,20 @@ export default function AdminPage() {
 
         {/* Tabs */}
         <div className="flex gap-2 mb-6">
-          {(["orders", "products"] as const).map((t) => (
+          {(["orders", "products", "users"] as const).map((t) => (
             <button
               key={t}
-              onClick={() => setTab(t)}
+              onClick={() => {
+                setTab(t);
+                if (t === "users" && users.length === 0) loadUsers();
+              }}
               className={`px-5 py-2 rounded-full text-sm font-bold border-2 transition-all ${
                 tab === t
                   ? "bg-primary text-white border-primary"
                   : "bg-white text-gray-400 border-gray-200 hover:border-primary hover:text-primary"
               }`}
             >
-              {t === "orders" ? "Orders" : "Products"}
+              {t === "orders" ? "Orders" : t === "products" ? "Products" : "Users"}
             </button>
           ))}
         </div>
@@ -287,6 +321,140 @@ export default function AdminPage() {
                     </div>
                   </div>
                 ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ── USERS TAB ── */}
+        {tab === "users" && (
+          <div>
+            <div className="flex items-center justify-between mb-5">
+              <p className="text-sm text-gray-400">{users.length} registered user{users.length !== 1 ? "s" : ""}</p>
+              <button
+                onClick={loadUsers}
+                disabled={usersLoading}
+                className="text-xs font-bold text-primary hover:underline disabled:opacity-50"
+              >
+                {usersLoading ? "Loading…" : "Refresh"}
+              </button>
+            </div>
+
+            {usersLoading && users.length === 0 ? (
+              <div className="bg-white rounded-2xl p-12 text-center text-gray-400 shadow-sm animate-pulse">
+                Loading users…
+              </div>
+            ) : users.length === 0 ? (
+              <div className="bg-white rounded-2xl p-12 text-center text-gray-400 shadow-sm">
+                No users found.
+              </div>
+            ) : (
+              <div className="flex flex-col gap-3">
+                {users.map((user) => {
+                  const userOrders = orders.filter(
+                    (o) => o.userEmail === user.email
+                  );
+                  const isExpanded = expandedUser === user.email;
+                  return (
+                    <div key={user.email} className="bg-white rounded-2xl shadow-sm overflow-hidden">
+                      <div className="flex flex-wrap items-center gap-4 p-5">
+                        {/* Avatar */}
+                        <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-extrabold text-lg shrink-0">
+                          {user.name?.[0]?.toUpperCase() ?? "?"}
+                        </div>
+
+                        {/* Info */}
+                        <div className="flex-1 min-w-0">
+                          <p className="font-bold text-gray-800 truncate">{user.name}</p>
+                          <p className="text-xs text-gray-400 truncate">{user.email}</p>
+                        </div>
+
+                        {/* Role badge + selector (admin only) */}
+                        <div className="flex items-center gap-2 shrink-0">
+                          {session.user?.role === "admin" ? (
+                            <select
+                              value={user.role}
+                              disabled={roleUpdating === user.email}
+                              onChange={(e) => changeRole(user.email, e.target.value)}
+                              className={`text-xs border-2 rounded-lg px-2 py-1.5 outline-none font-[inherit] transition-colors ${
+                                user.role === "admin"
+                                  ? "border-purple-300 text-purple-700 bg-purple-50"
+                                  : user.role === "manager"
+                                  ? "border-blue-300 text-blue-700 bg-blue-50"
+                                  : "border-gray-200 text-gray-600 bg-gray-50"
+                              } ${roleUpdating === user.email ? "opacity-50" : "cursor-pointer"}`}
+                            >
+                              <option value="user">User</option>
+                              <option value="manager">Manager</option>
+                              <option value="admin">Admin</option>
+                            </select>
+                          ) : (
+                            <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${
+                              user.role === "admin"
+                                ? "bg-purple-100 text-purple-700"
+                                : user.role === "manager"
+                                ? "bg-blue-100 text-blue-700"
+                                : "bg-gray-100 text-gray-600"
+                            }`}>
+                              {user.role}
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Orders toggle */}
+                        <button
+                          onClick={() => setExpandedUser(isExpanded ? null : user.email)}
+                          className="text-xs font-bold text-gray-400 hover:text-primary transition-colors shrink-0"
+                        >
+                          {userOrders.length} order{userOrders.length !== 1 ? "s" : ""} {isExpanded ? "▲" : "▼"}
+                        </button>
+                      </div>
+
+                      {/* Expanded orders */}
+                      {isExpanded && (
+                        <div className="border-t border-gray-100 px-5 pb-5 pt-4">
+                          {userOrders.length === 0 ? (
+                            <p className="text-sm text-gray-400 italic">No orders yet.</p>
+                          ) : (
+                            <div className="flex flex-col gap-3">
+                              {userOrders.map((order) => (
+                                <div key={order.id} className="bg-gray-50 rounded-xl p-4">
+                                  <div className="flex justify-between items-start gap-2 mb-2">
+                                    <div>
+                                      <p className="text-sm font-bold text-gray-700">{order.id}</p>
+                                      <p className="text-xs text-gray-400">
+                                        {new Date(order.createdAt).toLocaleDateString("en-GB", {
+                                          day: "numeric",
+                                          month: "short",
+                                          year: "numeric",
+                                        })}
+                                      </p>
+                                    </div>
+                                    <div className="flex flex-col items-end gap-1">
+                                      <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${ORDER_STATUS_COLORS[order.status]}`}>
+                                        {ORDER_STATUS_LABELS[order.status]}
+                                      </span>
+                                      <span className="text-sm font-extrabold text-primary">
+                                        Rs.&nbsp;{order.total.toLocaleString()}
+                                      </span>
+                                    </div>
+                                  </div>
+                                  <ul className="text-xs text-gray-500 flex flex-col gap-0.5">
+                                    {order.items.map(({ product, quantity }) => (
+                                      <li key={product.id}>
+                                        {product.name} <span className="text-gray-400">×{quantity}</span>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>
