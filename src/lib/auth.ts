@@ -50,14 +50,19 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
-        const result = await db.send(
-          new GetCommand({ TableName: USERS_TABLE, Key: { email: credentials.email } })
-        );
-        const user = result.Item as StoredUser | undefined;
-        if (!user) return null;
-        const valid = await bcrypt.compare(credentials.password, user.passwordHash);
-        if (!valid) return null;
-        return { id: user.id, name: user.name, email: user.email, role: user.role ?? "user" };
+        try {
+          const result = await db.send(
+            new GetCommand({ TableName: USERS_TABLE, Key: { email: credentials.email } })
+          );
+          const user = result.Item as StoredUser | undefined;
+          if (!user) return null;
+          const valid = await bcrypt.compare(credentials.password, user.passwordHash);
+          if (!valid) return null;
+          return { id: user.id, name: user.name, email: user.email, role: user.role ?? "user" };
+        } catch (err) {
+          console.error("[auth] authorize error:", err);
+          return null;
+        }
       },
     }),
   ],
