@@ -7,7 +7,7 @@ import PromoBanner from "@/components/PromoBanner";
 import ProductsSection from "@/components/ProductsSection";
 import ShopByAge from "@/components/ShopByAge";
 import WhyUs from "@/components/WhyUs";
-import Testimonials from "@/components/Testimonials";
+// import Testimonials from "@/components/Testimonials";
 import Newsletter from "@/components/Newsletter";
 import Footer from "@/components/Footer";
 
