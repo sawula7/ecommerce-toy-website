@@ -21,8 +21,6 @@ const ALL_STATUSES: OrderStatus[] = [
   "cancelled",
 ];
 
-const CATEGORIES = ["STEM Toys", "DIY Puzzles", "Wooden Toys"];
-
 const EMPTY_PRODUCT: Omit<Product, "id"> = {
   name: "",
   category: "STEM Toys",
@@ -45,13 +43,61 @@ export default function AdminPage() {
   const { orders, updateOrderStatus } = useOrders();
   const { products, addProduct, updateStock } = useProducts();
 
-  const [tab, setTab] = useState<"orders" | "products" | "users">("orders");
+  const [tab, setTab] = useState<"orders" | "products" | "categories" | "users">("orders");
   const [orderFilter, setOrderFilter] = useState<OrderStatus | "all">("all");
   const [newProduct, setNewProduct] = useState<Omit<Product, "id">>(EMPTY_PRODUCT);
   const [includesInput, setIncludesInput] = useState("");
   const [stockEdits, setStockEdits] = useState<Record<number, number>>({});
   const [addSuccess, setAddSuccess] = useState(false);
   const [uploading, setUploading] = useState(false);
+
+  // Categories tab state
+  const [categories, setCategories] = useState<string[]>([]);
+  const [newCategoryName, setNewCategoryName] = useState("");
+  const [categoryError, setCategoryError] = useState("");
+  const [categoryAdding, setCategoryAdding] = useState(false);
+  const [categoryDeleting, setCategoryDeleting] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch("/api/categories").then((r) => r.json()).then(setCategories);
+  }, []);
+
+  async function addCategory(e: React.FormEvent) {
+    e.preventDefault();
+    setCategoryError("");
+    setCategoryAdding(true);
+    try {
+      const res = await fetch("/api/categories", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: newCategoryName }),
+      });
+      if (!res.ok) {
+        const { error } = await res.json();
+        setCategoryError(error);
+        return;
+      }
+      setCategories((prev) => [...prev, newCategoryName.trim()].sort());
+      setNewCategoryName("");
+    } finally {
+      setCategoryAdding(false);
+    }
+  }
+
+  async function deleteCategory(name: string) {
+    setCategoryDeleting(name);
+    try {
+      const res = await fetch(`/api/categories/${encodeURIComponent(name)}`, { method: "DELETE" });
+      if (!res.ok) {
+        const { error } = await res.json();
+        setCategoryError(error);
+        return;
+      }
+      setCategories((prev) => prev.filter((c) => c !== name));
+    } finally {
+      setCategoryDeleting(null);
+    }
+  }
 
   // Users tab state
   type AdminUser = { id: string; name: string; email: string; role: string };
@@ -210,7 +256,7 @@ export default function AdminPage() {
 
         {/* Tabs */}
         <div className="flex gap-2 mb-6">
-          {(["orders", "products", "users"] as const).map((t) => (
+          {(["orders", "products", "categories", "users"] as const).map((t) => (
             <button
               key={t}
               onClick={() => {
@@ -223,7 +269,7 @@ export default function AdminPage() {
                   : "bg-white text-gray-400 border-gray-200 hover:border-primary hover:text-primary"
               }`}
             >
-              {t === "orders" ? "Orders" : t === "products" ? "Products" : "Users"}
+              {t === "orders" ? "Orders" : t === "products" ? "Products" : t === "categories" ? "Categories" : "Users"}
             </button>
           ))}
         </div>
@@ -323,6 +369,63 @@ export default function AdminPage() {
                 ))}
               </div>
             )}
+          </div>
+        )}
+
+        {/* ── CATEGORIES TAB ── */}
+        {tab === "categories" && (
+          <div className="max-w-lg">
+            <div className="bg-white rounded-2xl shadow-sm p-6 mb-6">
+              <h2 className="font-bold text-gray-800 mb-5" style={{ fontFamily: "var(--font-poppins)" }}>
+                Add New Category
+              </h2>
+              {categoryError && (
+                <div className="mb-4 bg-red-50 border border-red-200 text-red-700 text-sm font-semibold rounded-xl px-4 py-3">
+                  {categoryError}
+                </div>
+              )}
+              <form onSubmit={addCategory} className="flex gap-3">
+                <input
+                  type="text"
+                  value={newCategoryName}
+                  onChange={(e) => { setNewCategoryName(e.target.value); setCategoryError(""); }}
+                  placeholder="Category name"
+                  required
+                  className="flex-1 px-4 py-3 border-2 border-gray-200 focus:border-primary rounded-xl text-sm outline-none transition-colors font-[inherit]"
+                />
+                <button
+                  type="submit"
+                  disabled={categoryAdding || !newCategoryName.trim()}
+                  className="bg-primary hover:bg-primary-dk disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold px-6 py-3 rounded-xl transition-all"
+                >
+                  {categoryAdding ? "Adding…" : "Add"}
+                </button>
+              </form>
+            </div>
+
+            <div className="bg-white rounded-2xl shadow-sm p-6">
+              <h2 className="font-bold text-gray-800 mb-5" style={{ fontFamily: "var(--font-poppins)" }}>
+                Existing Categories
+              </h2>
+              {categories.length === 0 ? (
+                <p className="text-sm text-gray-400 italic">No categories yet.</p>
+              ) : (
+                <ul className="flex flex-col gap-2">
+                  {categories.map((cat) => (
+                    <li key={cat} className="flex items-center justify-between gap-3 py-2.5 border-b border-gray-50 last:border-0">
+                      <span className="text-sm font-semibold text-gray-700">{cat}</span>
+                      <button
+                        onClick={() => { setCategoryError(""); deleteCategory(cat); }}
+                        disabled={categoryDeleting === cat}
+                        className="text-xs font-bold text-red-400 hover:text-red-600 disabled:opacity-50 transition-colors"
+                      >
+                        {categoryDeleting === cat ? "Deleting…" : "Delete"}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
           </div>
         )}
 
@@ -545,7 +648,7 @@ export default function AdminPage() {
                     onChange={(e) => setNewProduct((p) => ({ ...p, category: e.target.value }))}
                     className="w-full px-4 py-3 border-2 border-gray-200 focus:border-primary rounded-xl text-sm outline-none font-[inherit]"
                   >
-                    {CATEGORIES.map((c) => (
+                    {categories.map((c) => (
                       <option key={c} value={c}>{c}</option>
                     ))}
                   </select>

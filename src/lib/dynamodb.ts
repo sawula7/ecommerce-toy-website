@@ -19,6 +19,7 @@ export const db = DynamoDBDocumentClient.from(raw, {
   marshallOptions: { removeUndefinedValues: true },
 });
 
-export const ORDERS_TABLE   = process.env.DYNAMODB_ORDERS_TABLE   ?? "edutoys-orders";
-export const PRODUCTS_TABLE = process.env.DYNAMODB_PRODUCTS_TABLE ?? "edutoys-products";
-export const USERS_TABLE    = process.env.DYNAMODB_USERS_TABLE    ?? "edutoys-users";
+export const ORDERS_TABLE     = process.env.DYNAMODB_ORDERS_TABLE     ?? "edutoys-orders";
+export const PRODUCTS_TABLE   = process.env.DYNAMODB_PRODUCTS_TABLE   ?? "edutoys-products";
+export const USERS_TABLE      = process.env.DYNAMODB_USERS_TABLE      ?? "edutoys-users";
+export const CATEGORIES_TABLE = process.env.DYNAMODB_CATEGORIES_TABLE ?? "edutoys-categories";
