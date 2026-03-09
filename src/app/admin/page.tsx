@@ -52,15 +52,35 @@ export default function AdminPage() {
   const [uploading, setUploading] = useState(false);
 
   // Categories tab state
-  const [categories, setCategories] = useState<string[]>([]);
+  type CategoryItem = { name: string; image?: string };
+  const [categories, setCategories] = useState<CategoryItem[]>([]);
   const [newCategoryName, setNewCategoryName] = useState("");
+  const [newCategoryImage, setNewCategoryImage] = useState("");
   const [categoryError, setCategoryError] = useState("");
   const [categoryAdding, setCategoryAdding] = useState(false);
+  const [categoryImageUploading, setCategoryImageUploading] = useState(false);
   const [categoryDeleting, setCategoryDeleting] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/api/categories").then((r) => r.json()).then(setCategories);
   }, []);
+
+  async function uploadCategoryImage(file: File): Promise<string> {
+    setCategoryImageUploading(true);
+    try {
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ filename: file.name, contentType: file.type }),
+      });
+      const { uploadUrl, publicUrl } = await res.json();
+      await fetch(uploadUrl, { method: "PUT", body: file, headers: { "Content-Type": file.type } });
+      setNewCategoryImage(publicUrl);
+      return publicUrl;
+    } finally {
+      setCategoryImageUploading(false);
+    }
+  }
 
   async function addCategory(e: React.FormEvent) {
     e.preventDefault();
@@ -70,15 +90,17 @@ export default function AdminPage() {
       const res = await fetch("/api/categories", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: newCategoryName }),
+        body: JSON.stringify({ name: newCategoryName, image: newCategoryImage || undefined }),
       });
       if (!res.ok) {
         const { error } = await res.json();
         setCategoryError(error);
         return;
       }
-      setCategories((prev) => [...prev, newCategoryName.trim()].sort());
+      const created: CategoryItem = await res.json();
+      setCategories((prev) => [...prev, created].sort((a, b) => a.name.localeCompare(b.name)));
       setNewCategoryName("");
+      setNewCategoryImage("");
     } finally {
       setCategoryAdding(false);
     }
@@ -93,7 +115,7 @@ export default function AdminPage() {
         setCategoryError(error);
         return;
       }
-      setCategories((prev) => prev.filter((c) => c !== name));
+      setCategories((prev) => prev.filter((c) => c.name !== name));
     } finally {
       setCategoryDeleting(null);
     }
@@ -384,21 +406,64 @@ export default function AdminPage() {
                   {categoryError}
                 </div>
               )}
-              <form onSubmit={addCategory} className="flex gap-3">
+              <form onSubmit={addCategory} className="flex flex-col gap-4">
                 <input
                   type="text"
                   value={newCategoryName}
                   onChange={(e) => { setNewCategoryName(e.target.value); setCategoryError(""); }}
                   placeholder="Category name"
                   required
-                  className="flex-1 px-4 py-3 border-2 border-gray-200 focus:border-primary rounded-xl text-sm outline-none transition-colors font-[inherit]"
+                  className="w-full px-4 py-3 border-2 border-gray-200 focus:border-primary rounded-xl text-sm outline-none transition-colors font-[inherit]"
                 />
+
+                {/* Image upload */}
+                <div>
+                  <p className="text-sm font-semibold text-gray-700 mb-2">Category Image</p>
+
+                  {newCategoryImage && (
+                    <div className="relative w-full h-36 rounded-xl overflow-hidden border-2 border-gray-200 mb-3 group">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={newCategoryImage} alt="" className="w-full h-full object-cover" />
+                      <button
+                        type="button"
+                        onClick={() => setNewCategoryImage("")}
+                        className="absolute inset-0 bg-black/40 text-white text-2xl font-bold opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  )}
+
+                  <div className="flex flex-wrap items-center gap-3">
+                    <label className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border-2 border-dashed border-gray-300 cursor-pointer text-sm font-semibold text-gray-500 hover:border-primary hover:text-primary transition-colors ${categoryImageUploading ? "opacity-50 pointer-events-none" : ""}`}>
+                      {categoryImageUploading ? "Uploading…" : "📎 Upload image"}
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) uploadCategoryImage(file);
+                        }}
+                      />
+                    </label>
+                    <span className="text-xs text-gray-400">or paste URL:</span>
+                    <input
+                      type="url"
+                      placeholder="https://…"
+                      className="flex-1 min-w-0 px-3 py-2 border-2 border-gray-200 focus:border-primary rounded-xl text-sm outline-none font-[inherit]"
+                      value={newCategoryImage}
+                      onChange={(e) => setNewCategoryImage(e.target.value)}
+                    />
+                  </div>
+                </div>
+
                 <button
                   type="submit"
-                  disabled={categoryAdding || !newCategoryName.trim()}
-                  className="bg-primary hover:bg-primary-dk disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold px-6 py-3 rounded-xl transition-all"
+                  disabled={categoryAdding || categoryImageUploading || !newCategoryName.trim()}
+                  className="w-full bg-primary hover:bg-primary-dk disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold px-6 py-3 rounded-xl transition-all"
                 >
-                  {categoryAdding ? "Adding…" : "Add"}
+                  {categoryAdding ? "Adding…" : "Add Category"}
                 </button>
               </form>
             </div>
@@ -412,14 +477,23 @@ export default function AdminPage() {
               ) : (
                 <ul className="flex flex-col gap-2">
                   {categories.map((cat) => (
-                    <li key={cat} className="flex items-center justify-between gap-3 py-2.5 border-b border-gray-50 last:border-0">
-                      <span className="text-sm font-semibold text-gray-700">{cat}</span>
+                    <li key={cat.name} className="flex items-center gap-3 py-2.5 border-b border-gray-50 last:border-0">
+                      {/* Thumbnail */}
+                      <div className="w-12 h-12 rounded-xl bg-gray-100 shrink-0 overflow-hidden">
+                        {cat.image ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={cat.image} alt="" className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-gray-300 text-xl">🖼️</div>
+                        )}
+                      </div>
+                      <span className="flex-1 text-sm font-semibold text-gray-700">{cat.name}</span>
                       <button
-                        onClick={() => { setCategoryError(""); deleteCategory(cat); }}
-                        disabled={categoryDeleting === cat}
-                        className="text-xs font-bold text-red-400 hover:text-red-600 disabled:opacity-50 transition-colors"
+                        onClick={() => { setCategoryError(""); deleteCategory(cat.name); }}
+                        disabled={categoryDeleting === cat.name}
+                        className="text-xs font-bold text-red-400 hover:text-red-600 disabled:opacity-50 transition-colors shrink-0"
                       >
-                        {categoryDeleting === cat ? "Deleting…" : "Delete"}
+                        {categoryDeleting === cat.name ? "Deleting…" : "Delete"}
                       </button>
                     </li>
                   ))}
@@ -649,7 +723,7 @@ export default function AdminPage() {
                     className="w-full px-4 py-3 border-2 border-gray-200 focus:border-primary rounded-xl text-sm outline-none font-[inherit]"
                   >
                     {categories.map((c) => (
-                      <option key={c} value={c}>{c}</option>
+                      <option key={c.name} value={c.name}>{c.name}</option>
                     ))}
                   </select>
                 </div>
