@@ -5,7 +5,8 @@ const s3 = new S3Client({
   region: process.env.AWS_REGION ?? "ap-southeast-1",
 });
 
-const BUCKET = process.env.AWS_S3_BUCKET!;
+// Use S3_BUCKET (not AWS_S3_BUCKET) — Amplify blocks custom vars with "AWS_" prefix
+const BUCKET = process.env.S3_BUCKET!;
 const REGION = process.env.AWS_REGION ?? "ap-southeast-1";
 
 /**
