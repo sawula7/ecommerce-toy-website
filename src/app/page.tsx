@@ -23,7 +23,7 @@ export default function Home() {
       <ProductsSection />
       <ShopByAge />
       <WhyUs />
-      <Testimonials />
+      {/* <Testimonials /> */}
       <Newsletter />
       <Footer />
     </main>
