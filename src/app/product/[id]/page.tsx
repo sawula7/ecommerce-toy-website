@@ -29,9 +29,16 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
   // product is defined from here — notFound() throws but TS doesn't infer it
   // notFound() throws, asserting so TS sees a defined Product below
   const p = product as NonNullable<typeof product>;
+
+  const allImages = [p.image, ...(p.images ?? [])].filter(Boolean);
+  const hasVideo = Boolean(p.videoUrl);
+  type MediaItem = string | "video";
+  const mediaItems: MediaItem[] = [...allImages, ...(hasVideo ? (["video"] as MediaItem[]) : [])];
+
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
   const [activeTab, setActiveTab] = useState<"description" | "includes" | "specs">("description");
+  const [activeMedia, setActiveMedia] = useState<MediaItem>(allImages[0] ?? "video");
 
   const related = products.filter((r) => r.category === p.category && r.id !== p.id).slice(0, 4);
   const total = p.price * qty;
@@ -61,23 +68,71 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
         {/* ── Main product section ── */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-16">
 
-          {/* Left — image */}
-          <div className="flex flex-col gap-4">
+          {/* Left — media gallery */}
+          <div className="flex flex-col gap-3">
+            {/* Main media viewer */}
             <div className="relative rounded-3xl overflow-hidden bg-white shadow-md aspect-square">
-              <Image
-                src={p.image}
-                alt={p.name}
-                fill
-                className="object-cover"
-                sizes="(max-width:1024px) 100vw, 50vw"
-                priority
-              />
-              {p.badge && (
+              {activeMedia === "video" && p.videoUrl ? (
+                p.videoUrl.includes("youtube") || p.videoUrl.includes("youtu.be") || p.videoUrl.includes("vimeo") ? (
+                  <iframe
+                    src={p.videoUrl}
+                    title={`${p.name} video`}
+                    className="absolute inset-0 w-full h-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                ) : (
+                  <video
+                    src={p.videoUrl}
+                    controls
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                )
+              ) : (
+                <Image
+                  src={activeMedia as string}
+                  alt={p.name}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width:1024px) 100vw, 50vw"
+                  priority
+                />
+              )}
+              {p.badge && activeMedia !== "video" && (
                 <span className={`absolute top-4 left-4 ${badgeStyles[p.badge]} text-white text-xs font-extrabold uppercase px-3 py-1.5 rounded-full`}>
                   {p.badge}
                 </span>
               )}
             </div>
+
+            {/* Thumbnail strip — only shown when there are multiple media items */}
+            {mediaItems.length > 1 && (
+              <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+                {mediaItems.map((item, i) => (
+                  <button
+                    key={item === "video" ? "video" : i}
+                    onClick={() => setActiveMedia(item)}
+                    className={`relative shrink-0 w-16 h-16 rounded-xl overflow-hidden border-2 transition-all ${
+                      activeMedia === item ? "border-primary shadow-md" : "border-gray-200 hover:border-gray-400"
+                    }`}
+                  >
+                    {item === "video" ? (
+                      <div className="w-full h-full bg-gray-800 flex items-center justify-center">
+                        <span className="text-white text-xl">▶</span>
+                      </div>
+                    ) : (
+                      <Image
+                        src={item}
+                        alt={`${p.name} ${i + 1}`}
+                        fill
+                        className="object-cover"
+                        sizes="64px"
+                      />
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Right — details */}

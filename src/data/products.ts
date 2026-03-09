@@ -7,6 +7,8 @@ export interface Product {
   rating: number;
   reviews: number;
   image: string;
+  images?: string[];   // additional gallery images
+  videoUrl?: string;   // YouTube embed URL or direct video URL
   badge?: "new" | "hot" | "sale";
   description: string;
   ageRange: string;

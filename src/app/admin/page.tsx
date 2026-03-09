@@ -30,6 +30,8 @@ const EMPTY_PRODUCT: Omit<Product, "id"> = {
   rating: 5,
   reviews: 0,
   image: "",
+  images: [],
+  videoUrl: "",
   description: "",
   ageRange: "",
   material: "",
@@ -49,6 +51,7 @@ export default function AdminPage() {
   const [includesInput, setIncludesInput] = useState("");
   const [stockEdits, setStockEdits] = useState<Record<number, number>>({});
   const [addSuccess, setAddSuccess] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -80,10 +83,47 @@ export default function AdminPage() {
   const filteredOrders =
     orderFilter === "all" ? orders : orders.filter((o) => o.status === orderFilter);
 
-  function handleAddProduct(e: React.FormEvent) {
+  async function uploadFile(file: File): Promise<string> {
+    const res = await fetch("/api/upload", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ filename: file.name, contentType: file.type }),
+    });
+    const { uploadUrl, publicUrl } = await res.json();
+    await fetch(uploadUrl, { method: "PUT", body: file, headers: { "Content-Type": file.type } });
+    return publicUrl;
+  }
+
+  async function handleImageFiles(files: FileList | null) {
+    if (!files || files.length === 0) return;
+    setUploading(true);
+    try {
+      const urls = await Promise.all(Array.from(files).map(uploadFile));
+      setNewProduct((p) => {
+        const allImages = [...(p.images ?? []), ...urls];
+        return { ...p, image: p.image || allImages[0], images: p.image ? allImages : allImages.slice(1) };
+      });
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  function removeImage(url: string) {
+    setNewProduct((p) => {
+      if (p.image === url) {
+        const rest = p.images ?? [];
+        return { ...p, image: rest[0] ?? "", images: rest.slice(1) };
+      }
+      return { ...p, images: (p.images ?? []).filter((u) => u !== url) };
+    });
+  }
+
+  async function handleAddProduct(e: React.FormEvent) {
     e.preventDefault();
-    addProduct({
+    await addProduct({
       ...newProduct,
+      images: newProduct.images?.length ? newProduct.images : undefined,
+      videoUrl: newProduct.videoUrl || undefined,
       includes: includesInput.split(",").map((s) => s.trim()).filter(Boolean),
     });
     setNewProduct(EMPTY_PRODUCT);
@@ -368,12 +408,68 @@ export default function AdminPage() {
                   onChange={(v) => setNewProduct((p) => ({ ...p, ageRange: v }))}
                   required
                 />
+                {/* ── Images ── */}
+                <div className="sm:col-span-2">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Product Images
+                    <span className="text-gray-400 font-normal ml-1">(first image = main thumbnail)</span>
+                  </label>
+
+                  {/* Existing image thumbnails */}
+                  {(newProduct.image || (newProduct.images ?? []).length > 0) && (
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      {[newProduct.image, ...(newProduct.images ?? [])].filter(Boolean).map((url) => (
+                        <div key={url} className="relative w-20 h-20 rounded-xl overflow-hidden border-2 border-gray-200 group">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={url} alt="" className="w-full h-full object-cover" />
+                          <button
+                            type="button"
+                            onClick={() => removeImage(url!)}
+                            className="absolute inset-0 bg-black/50 text-white text-lg font-bold opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                          >
+                            ×
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Upload button */}
+                  <label className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border-2 border-dashed border-gray-300 cursor-pointer text-sm font-semibold text-gray-500 hover:border-primary hover:text-primary transition-colors ${uploading ? "opacity-50 pointer-events-none" : ""}`}>
+                    {uploading ? "Uploading…" : "📎 Upload images"}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      className="hidden"
+                      onChange={(e) => handleImageFiles(e.target.files)}
+                    />
+                  </label>
+                  <span className="text-xs text-gray-400 ml-3">or paste a URL:</span>
+                  <input
+                    type="url"
+                    placeholder="https://…"
+                    className="mt-2 w-full px-4 py-2.5 border-2 border-gray-200 focus:border-primary rounded-xl text-sm outline-none font-[inherit]"
+                    onBlur={(e) => {
+                      const v = e.target.value.trim();
+                      if (!v) return;
+                      setNewProduct((p) => ({
+                        ...p,
+                        image: p.image || v,
+                        images: p.image ? [...(p.images ?? []), v] : p.images,
+                      }));
+                      e.target.value = "";
+                    }}
+                  />
+                </div>
+
+                {/* ── Video URL ── */}
                 <div className="sm:col-span-2">
                   <AdminField
-                    label="Image URL"
-                    value={newProduct.image}
-                    onChange={(v) => setNewProduct((p) => ({ ...p, image: v }))}
-                    required
+                    label="Video URL (optional — YouTube embed or direct .mp4)"
+                    value={newProduct.videoUrl ?? ""}
+                    onChange={(v) => setNewProduct((p) => ({ ...p, videoUrl: v }))}
+                    placeholder="https://www.youtube.com/embed/… or https://…/video.mp4"
                   />
                 </div>
                 <div className="sm:col-span-2">
@@ -418,7 +514,8 @@ export default function AdminPage() {
                 <div className="sm:col-span-2 flex justify-end">
                   <button
                     type="submit"
-                    className="bg-primary hover:bg-primary-dk text-white font-bold px-8 py-3 rounded-xl transition-all hover:-translate-y-0.5 shadow-md"
+                    disabled={uploading || !newProduct.image}
+                    className="bg-primary hover:bg-primary-dk disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold px-8 py-3 rounded-xl transition-all hover:-translate-y-0.5 shadow-md"
                   >
                     Add Product
                   </button>
