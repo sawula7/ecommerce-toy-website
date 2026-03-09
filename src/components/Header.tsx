@@ -126,7 +126,7 @@ export default function Header() {
                   <a href="#" className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-primary-lt hover:text-primary transition-colors">
                     Wishlist
                   </a>
-                  {session.user?.email === "admin@edutoys.lk" && (
+                  {["admin", "manager"].includes(session.user?.role ?? "") && (
                     <Link href="/admin" onClick={() => setUserMenuOpen(false)} className="block px-4 py-2.5 text-sm text-purple-600 font-semibold hover:bg-purple-50 transition-colors">
                       Admin Panel
                     </Link>

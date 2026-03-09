@@ -4,15 +4,13 @@ import { UpdateCommand } from "@aws-sdk/lib-dynamodb";
 import { authOptions } from "@/lib/auth";
 import { db, ORDERS_TABLE } from "@/lib/dynamodb";
 
-const ADMIN_EMAIL = "admin@edutoys.lk";
-
-// PATCH /api/orders/[id] — update order status (admin only)
+// PATCH /api/orders/[id] — update order status (admin/manager only)
 export async function PATCH(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await getServerSession(authOptions);
-  if (session?.user?.email !== ADMIN_EMAIL) {
+  if (!["admin", "manager"].includes(session?.user?.role ?? "")) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 

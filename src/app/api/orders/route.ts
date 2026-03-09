@@ -4,16 +4,14 @@ import { ScanCommand, PutCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
 import { authOptions } from "@/lib/auth";
 import { db, ORDERS_TABLE } from "@/lib/dynamodb";
 
-const ADMIN_EMAIL = "admin@edutoys.lk";
-
-// GET /api/orders — admin gets all; logged-in user gets their own
+// GET /api/orders — admin/manager gets all; logged-in user gets their own
 export async function GET() {
   const session = await getServerSession(authOptions);
   if (!session?.user?.email) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  if (session.user.email === ADMIN_EMAIL) {
+  if (["admin", "manager"].includes(session.user.role ?? "")) {
     const result = await db.send(new ScanCommand({ TableName: ORDERS_TABLE }));
     const orders = (result.Items ?? []).sort(
       (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()

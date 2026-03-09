@@ -5,12 +5,14 @@ import FacebookProvider from "next-auth/providers/facebook";
 import bcrypt from "bcryptjs";
 import { GetCommand, PutCommand } from "@aws-sdk/lib-dynamodb";
 import { db, USERS_TABLE } from "@/lib/dynamodb";
+import type { UserRole } from "@/types/next-auth";
 
 interface StoredUser {
   id: string;
   name: string;
   email: string;
   passwordHash: string;
+  role: UserRole;
 }
 
 export async function registerUser(name: string, email: string, password: string) {
@@ -19,9 +21,9 @@ export async function registerUser(name: string, email: string, password: string
     throw new Error("An account with this email already exists.");
   }
   const passwordHash = await bcrypt.hash(password, 10);
-  const user: StoredUser = { id: crypto.randomUUID(), name, email, passwordHash };
+  const user: StoredUser = { id: crypto.randomUUID(), name, email, passwordHash, role: "user" };
   await db.send(new PutCommand({ TableName: USERS_TABLE, Item: user }));
-  return { id: user.id, name: user.name, email: user.email };
+  return { id: user.id, name: user.name, email: user.email, role: user.role };
 }
 
 export const authOptions: NextAuthOptions = {
@@ -49,11 +51,25 @@ export const authOptions: NextAuthOptions = {
         if (!user) return null;
         const valid = await bcrypt.compare(credentials.password, user.passwordHash);
         if (!valid) return null;
-        return { id: user.id, name: user.name, email: user.email };
+        return { id: user.id, name: user.name, email: user.email, role: user.role ?? "user" };
       },
     }),
   ],
   pages: { signIn: "/login" },
   session: { strategy: "jwt" },
   secret: process.env.NEXTAUTH_SECRET,
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.role = (user as { role?: UserRole }).role ?? "user";
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.role = (token.role as UserRole) ?? "user";
+      }
+      return session;
+    },
+  },
 };

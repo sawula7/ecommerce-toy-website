@@ -13,8 +13,6 @@ import {
 } from "@/context/OrderContext";
 import { Product } from "@/data/products";
 
-const ADMIN_EMAIL = "admin@toyhouse.lk";
-
 const ALL_STATUSES: OrderStatus[] = [
   "pending",
   "processing",
@@ -66,7 +64,7 @@ export default function AdminPage() {
     );
   }
 
-  if (!session || session.user?.email !== ADMIN_EMAIL) {
+  if (!session || !["admin", "manager"].includes(session.user?.role ?? "")) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 gap-4">
         <span className="text-6xl">🔒</span>

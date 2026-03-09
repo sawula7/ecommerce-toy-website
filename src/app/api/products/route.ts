@@ -5,8 +5,6 @@ import { authOptions } from "@/lib/auth";
 import { db, PRODUCTS_TABLE } from "@/lib/dynamodb";
 import { products as staticProducts } from "@/data/products";
 
-const ADMIN_EMAIL = "admin@edutoys.lk";
-
 // GET /api/products — public; seeds DynamoDB from static data on first run
 export async function GET() {
   const result = await db.send(new ScanCommand({ TableName: PRODUCTS_TABLE }));
@@ -29,7 +27,7 @@ export async function GET() {
 // POST /api/products — add new product (admin only)
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
-  if (session?.user?.email !== ADMIN_EMAIL) {
+  if (!["admin", "manager"].includes(session?.user?.role ?? "")) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
